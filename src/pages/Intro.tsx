@@ -209,31 +209,31 @@ function Intro() {
           <div className="parts-container">
               <div>
                   <div id="entertainment" className="part entertainment">
-                      <img src={screen === 'mob' ? EntertainmentMobile 
+                      <img rel='preload' loading='lazy' src={screen === 'mob' ? EntertainmentMobile 
                       : screen === 'tab' ? EntertainmentTablet 
                       : Entertainment} alt="" />
                       <span className="shadow"></span>
                   </div>
                   <div id="learning-tracker" className="part learning-tracker">
-                      <img src={screen === 'mob' ? LearningTrackerMobile 
+                      <img rel='preload' loading='lazy' src={screen === 'mob' ? LearningTrackerMobile 
                       : screen === 'tab' ? LearningTrackerTablet 
                       : LearningTracker} alt="" />
                       <span className="shadow"></span>
                   </div>
                   <div id="central" className="part central">
-                      <img src={screen === 'mob' ? CentralMobile 
+                      <img rel='preload' loading='lazy' src={screen === 'mob' ? CentralMobile 
                       : screen === 'tab' ? CentralTablet 
                       : Central} alt="" />
                       <span className="shadow"></span>
                   </div>
                   <div id="sessions-manager" className="part sessions-manager">
-                      <img src={screen === 'mob' ? SessionsManagerMobile 
+                      <img rel='preload' loading='lazy' src={screen === 'mob' ? SessionsManagerMobile 
                       : screen === 'tab' ? SessionsManagerTablet 
                       : SessionsManager} alt="" />
                       <span className="shadow"></span>
                   </div>
                   <div id="goals" className="part goals">
-                      <img src={screen === 'mob' ? GoalsMobile 
+                      <img rel='preload' loading='lazy' src={screen === 'mob' ? GoalsMobile 
                       : screen === 'tab' ? GoalsTablet 
                       : Goals} alt="" />
                       <span className="shadow"></span>
