@@ -1,5 +1,5 @@
-import React, {useEffect} from 'react';
-import {Link, useLocation, useNavigate} from 'react-router-dom';
+import React from 'react';
+import {Link, useLocation} from 'react-router-dom';
 
 
 function Layout({children}: {children: React.ReactNode}) {

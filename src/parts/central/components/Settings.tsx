@@ -1,7 +1,3 @@
-import {useState, useEffect} from 'react';
-import {FadeLoader} from 'react-spinners'
-import { createApi, handleError } from '../api';
-
 
 function Settings() {
   return (
