@@ -84,7 +84,7 @@ function MaterialsContainer({materials, status='', currentActive='anime&manga', 
   }, [active, materials, animeAndManga, showsAndMovies, game, other]);
 
   function handleGoLeft() {
-    const container = document.querySelector(`.materials-container.${status} .materials`);
+    const container = document.querySelector(`.materials-container.${(status || currentActive).replace('&', '\\&')} .materials`);
     if (container) {
         if (container.scrollLeft > 0) {
             container.scrollTo({
@@ -97,7 +97,7 @@ function MaterialsContainer({materials, status='', currentActive='anime&manga', 
   }
 
   function handleGoRight() {
-    const container = document.querySelector(`.materials-container.${status} .materials`);
+    const container = document.querySelector(`.materials-container.${(status || currentActive).replace('&', '\\&')} .materials`);
     if (container) {
         container.scrollTo({
             left: container.scrollLeft + (container.querySelector('.material')?.clientWidth as number) + 30,
@@ -118,7 +118,7 @@ function MaterialsContainer({materials, status='', currentActive='anime&manga', 
   }
 
   function handleLeftMouseDown() {
-      const container = document.querySelector(`.materials-container.${status} .materials`) as HTMLElement;
+      const container = document.querySelector(`.materials-container.${(status || currentActive).replace('&', '\\&')} .materials`) as HTMLElement;
       const timer = window.setTimeout(() => {
           if (container) handleGoLeftZero(container);
       }, 600);
@@ -131,7 +131,7 @@ function MaterialsContainer({materials, status='', currentActive='anime&manga', 
   }
 
   function handleRightMouseDown() {
-      const container = document.querySelector(`.materials-container.${status} .materials`) as HTMLElement;
+      const container = document.querySelector(`.materials-container.${(status || currentActive).replace('&', '\\&')} .materials`) as HTMLElement;
       const timer = window.setTimeout(() => {
           if (container) handleGoLeftAll(container);
       }, 600);
@@ -145,7 +145,7 @@ function MaterialsContainer({materials, status='', currentActive='anime&manga', 
 
 
   return (
-    <div className={'materials-container '+status}>
+    <div className={`materials-container ${status} ${currentActive}`}>
         {!one && (
             <div className="types">
                 <button id="anime&manga" >Anime&Manga</button>

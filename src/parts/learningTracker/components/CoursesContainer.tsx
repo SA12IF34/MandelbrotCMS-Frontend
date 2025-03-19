@@ -17,7 +17,7 @@ function CoursesContainer({courses}: {courses: Array<Course> | undefined}) {
                 <div className="course-img">
                   <img src={course.image} alt="" />
                 </div>
-                <h4 className='course-title'>{course.title}</h4>
+                <h4 className='course-title'>{course.title.length > 40 ? course.title.slice(0, 41)+"..." : course.title}</h4>
                 <div className='course-progress'>
                   <div style={{width: `${course.progress}%`}} className="progress"></div>
                   <div style={{width: 12, height: 12, top: `50%`, left: `${course.progress}%`}} className="progress-pointer"></div>

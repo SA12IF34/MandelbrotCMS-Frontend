@@ -121,18 +121,24 @@ function Project() {
             <p>{project.description}</p>
           </div>
           <div className="dates">
-            <div>
+            <div style={{alignItems: 'center'}}>
               <h3>
                 Start Date: 
               </h3>
-              {editStartDate ? (
-                <input onChange={() => {
+              {editStartDate ? (<>
+                <input ref={startDateRef} type="date" name="" id="" />
+                <button className='prepare-btn' onClick={() => {
                   if (startDateRef.current?.value) {
                     handleUpdateProject({start_date: startDateRef.current.value});
                     setEditStartDate(false);
+                  } else {
+                    handleUpdateProject({start_date: null});
+                    setEditStartDate(false);
                   }
-                }} ref={startDateRef} type="date" name="" id="" />
-              ) : (
+                }}>
+                  <IoCheckmark />
+                </button>
+              </>) : (
                 <>
                   <h3>
                   &nbsp;&nbsp;{project.start_date ? project.start_date : (<span style={{fontStyle: 'italic'}}>Indertermined</span>)}
@@ -148,14 +154,20 @@ function Project() {
               <h3>
                 Finish Date: 
               </h3>
-              {editFinishDate ? (
-                <input onChange={() => {
+              {editFinishDate ? (<>
+                <input ref={finishDateRef} type="date" />
+                <button className='prepare-btn' onClick={() => {
                   if (finishDateRef.current?.value) {
                     handleUpdateProject({finish_date: finishDateRef.current.value});
                     setEditFinishDate(false);
+                  } else {
+                    handleUpdateProject({finish_date: null});
+                    setEditFinishDate(false);
                   }
-                }} ref={finishDateRef} type="date" />
-              ): (
+                }}>
+                  <IoCheckmark />
+                  </button>
+              </>): (
                 <>
                   <h3>
                   &nbsp;&nbsp;{project.finish_date ? project.finish_date : (<span style={{fontStyle: 'italic'}}>Indetermined</span>)}

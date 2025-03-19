@@ -177,6 +177,22 @@ button.start {
     perspective-origin: top center;
     opacity: 0;
     transition: opacity 0.15s ease-out;
+    position: relative;
+}
+
+.parts-container > span.show-tip {
+    position: absolute;
+    top: 20px;
+    left: 0;
+    background-color: silver;
+    color: gray;
+    font-size: 32px;
+    padding: 5px;
+    width: max-content;
+    height: max-content;
+    border-radius: 50%;
+    display: flex;
+    cursor: pointer;
 }
 
 .parts-container.show {
@@ -201,6 +217,7 @@ button.start {
     position: relative;
     transform-style: preserve-3d;
     box-shadow: 0px 0px 5px 2px #f1f1f1;
+    cursor: pointer;
 }
 
 .part#entertainment {
@@ -273,6 +290,31 @@ button.start {
     z-index: 1;
 }
 
+.part > .part-title {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.part > .part-title > div {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    place-items: center;
+    place-content: center;
+    background-image: linear-gradient(to top, rgba(0, 0, 0, 0.95) 10%, rgba(40, 40, 40, 0.95) 40%, transparent 100%);
+    color: white;
+    transform: translateY(100%);
+    transition: transform 0.4s ease-out;
+}
+
+.part.hover > .part-title > div {
+    transform: translateY(0%);
+}
+
+
+
 .part > .shadow {
     position: absolute;
     width: 80%;
@@ -284,11 +326,13 @@ button.start {
     left: 50%;
     transform: translateX(-50%) rotateX(90deg);
     transform-origin: top;
+    z-index: 2;
 }
 
 .new-container {
     text-align: center;
     transform: translate(-50%, -100%);
+    z-index: 1;
 }
 
 .new-container > h1 {
@@ -315,6 +359,104 @@ button.start {
 .action-btns.hide {
     display: none;
 }
+
+.part-details-container,
+.part-details-container > div:nth-child(2) {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+}
+
+.part-details-container > div:nth-child(1),
+.part-details-container > div:nth-child(3) {
+    content: '';
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    z-index: 1;
+    animation-fill-mode: forwards !important;
+}
+.part-details-container > div:nth-child(1) {
+    transform: translateY(-100%);
+    /* top: -100%; */
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.95) 10%, transparent 100%);
+    animation: part-details-one 0.5s ease-in-out 1;
+    
+}
+.part-details-container > div:nth-child(3) {
+    transform: translateY(100%);
+    /* top: 100%; */
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.95) 10%, transparent 100%);
+    animation: part-details-two 0.5s ease-in-out 1;
+}
+
+.part-details-container > div:nth-child(2) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    animation: show-details 0.5s ease-in-out 1;
+    animation-delay: .7s;
+    animation-fill-mode: forwards;
+    opacity: 0;
+    z-index: 2;
+}
+
+.part-details-container > div:nth-child(2) > * {
+    color: white;
+}
+
+.part-details-container > div:nth-child(2) > p {
+    font-size: 1.2em;
+    line-height: 1.4em;
+    text-align: center;
+}
+
+.part-details-container .close-details {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 32px;
+    color: white;
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+    outline: none;
+    padding: none;
+    border-radius: none;
+    box-shadow: none;
+    display: flex;
+    width: max-content;
+    height: max-content;
+    z-index: 3;
+}
+
+@keyframes show-details {
+    from {
+        opacity: 0;
+    } to {
+        opacity: 1;
+    }
+}
+
+@keyframes part-details-one {
+    from {
+        transform: translateY(-100%);
+    } to {
+        transform: translateY(0%);
+    }
+}
+
+@keyframes part-details-two {
+    from {
+        transform: translateY(100%);
+    } to {
+        transform: translateY(0%);
+    }
+}
+
 
 @keyframes slide {
     from {
@@ -367,6 +509,7 @@ button.start {
     }
 }
 
+
 @media screen and (max-width: 545px) {
     .intro-page .container > div,
     .new-container > h1 {
@@ -374,7 +517,11 @@ button.start {
     }
 
     .intro-page .container.start > div p > span {
-        letter-spacing: 7px;
+        letter-spacing: 5px;
+    }
+
+    .parts-container {
+        transition: opacity 0.1s ease-out;
     }
 
     @keyframes wave {
@@ -383,6 +530,12 @@ button.start {
         } to {
             transform:  translateY(10px);
         }
+    }
+}
+
+@media screen and (max-width: 400px) {
+    .intro-page .container > div {
+        font-size: 1.4em;
     }
 }
 

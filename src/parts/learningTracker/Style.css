@@ -95,8 +95,8 @@ a.not-found-link {
 
 .courses-container a {
     color: black;
-    width: max-content;
-    width: calc((100% - 90px) / 4)
+    min-width: calc((100% - 90px) / 4);
+    max-width: calc((100% - 90px) / 4);
 }
 
 .course-element {
@@ -358,19 +358,22 @@ Media Queries
 
 @media screen and (max-width: 1024px) {
     .courses-container a {
-        width: calc((100vw - 120px) / 3);
+        min-width: calc((100vw - 120px) / 3);
+        max-width: calc((100vw - 120px) / 3);
     }
 }
 
 @media screen and (max-width: 768px) {
     .courses-container a {
-        width: calc((100vw - 90px) / 2);
+        min-width: calc((100vw - 90px) / 2);
+        max-width: calc((100vw - 90px) / 2);
     }
 }
 
 
 @media screen and (max-width: 545px) {
     .courses-container a {
-        width: calc(100vw - 60px);
+        min-width: calc(100vw - 60px);
+        max-width: calc(100vw - 60px);
     }
 }

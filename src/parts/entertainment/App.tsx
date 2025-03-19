@@ -1,4 +1,4 @@
-import {lazy, useContext, useEffect} from 'react';
+import {lazy, useContext} from 'react';
 import {Routes, Route} from 'react-router-dom';
 import './Style.css';
 
@@ -32,10 +32,6 @@ function App() {
     c2: '#421C1A',
     c3: '#F5F5F5'
   };
-
-  useEffect(() => {
-    console.log(theme)
-  }, [theme])
 
 
   return (

@@ -64,7 +64,8 @@ function Course() {
         e.preventDefault();
         if (course?.status === 'done') {
             return;
-        }
+        } 
+        
 
         const input = (e.target as HTMLLabelElement).firstElementChild as HTMLInputElement;
 
@@ -78,10 +79,19 @@ function Course() {
             input.checked = value;
             
             if (value) {
+                if (course?.status === 'later') {
+                    handleUpdateCourse({'status': 'current'});
+                }
                 ReactDOM.createRoot((e.target as HTMLLabelElement).lastElementChild as HTMLButtonElement).render(
                     <FaStar color="gold" /> 
                 )
             } else {
+                const doneSections = document.querySelectorAll(".section input:checked");
+
+                if (doneSections.length === 0) {
+                    handleUpdateCourse({'status': 'later'});
+                }
+
                 ReactDOM.createRoot((e.target as HTMLLabelElement).lastElementChild as HTMLButtonElement).render(
                     <FaRegStar color="#c0c0c0" />
                 )

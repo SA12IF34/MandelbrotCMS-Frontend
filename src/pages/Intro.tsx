@@ -1,4 +1,6 @@
 import {useEffect, useState} from 'react';
+import {createPortal} from 'react-dom';
+import {FaExclamation} from 'react-icons/fa6';
 import '../styles/intro.css';
 
 // Images
@@ -27,14 +29,36 @@ import GoalsMobile from '../assets/images/parts/mobile/Goals.png';
 import domainExpansion from '../assets/audio/domain-expansion-sukuna.mp3';
 import audio from '../assets/audio/audio.mp3';
 
+
 import {createApi} from '../api';
 import { AxiosError } from 'axios';
+
+import PartDetails from '../components/PartDetails';
 
 function Intro() {
 
   const [screen, setScreen] = useState<'desk' | 'tab' | 'mob'>('desk');
-
   const [authenticated, setAuthenticated] = useState<boolean>(false);
+  const [showPartDetails, setShowPartDetails] = useState<boolean>(false);
+  const [partName, setPartName] = useState<string>();
+  const [partDescription, setPartDescription] = useState<string>();
+
+
+  const entertainmentDescription = `
+  I'm too lazy to write it's description today.I'm too lazy to write it's description today.
+  `;
+  const learningTrackerDescription = `
+  I'm too lazy to write it's description today.
+  `;
+  const centralDescription = `
+  I'm too lazy to write it's description today.
+  `;
+  const sessionsManagerDescription = `
+  I'm too lazy to write it's description today.
+  `;
+  const goalsDescription = `
+  I'm too lazy to write it's description today.
+  `;
 
   const handleCheckAuth = async () => {
     try {
@@ -70,12 +94,68 @@ function Intro() {
     newContainer.append(title);
 
     (page.querySelector('.domain-container') as HTMLElement).before(newContainer);
-
+    handlePartsInteraction();
+    
     const lastTime = setTimeout(() => {
         (page.querySelector('.action-btns') as HTMLElement).classList.remove('hide');
         clearTimeout(lastTime);
     }, 3800)
   
+  }
+
+  const handlePartsInteraction = () => {
+    const parts = document.querySelectorAll('.part') as NodeListOf<HTMLDivElement>;
+
+    parts.forEach((part: Element) => {
+        part.addEventListener('mouseover', () => {
+            part.classList.add('hover');
+        });
+
+        part.addEventListener('mouseout', () => {
+            part.classList.remove('hover');
+        });
+
+        part.addEventListener('click', () => {
+            part.classList.add('selected');
+           
+            switch (part.id) {
+                case 'central':
+                    setPartName('Central');
+                    setPartDescription(centralDescription);
+                    break;
+                case 'sessions-manager':
+                    setPartName('Sessions Manager');
+                    setPartDescription(sessionsManagerDescription);
+                    break;
+                case 'learning-tracker':
+                    setPartName('Learning Tracker');
+                    setPartDescription(learningTrackerDescription);
+                    break;
+                case 'entertainment':
+                    setPartName('Entertainment');
+                    setPartDescription(entertainmentDescription);
+                    break;
+                case 'goals':
+                    setPartName('Goals');
+                    setPartDescription(goalsDescription);
+                    break;
+                default:
+                    break;
+            }
+
+            setShowPartDetails(true);
+
+        })
+    })
+  }
+
+  const handleShowTip = () => {
+    let action = 'Click';
+    if (window.matchMedia('(max-width: 912px;)').matches) {
+        action = 'Tap';
+    }
+
+    alert(`${action} on part to view it's details`);
   }
 
   useEffect(() => {
@@ -149,9 +229,7 @@ function Intro() {
 
     btn.addEventListener('click', handleStartAction);
 
-    
-    
-    
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
 
@@ -207,38 +285,66 @@ function Intro() {
           </div>
 
           <div className="parts-container">
-              <div>
-                  <div id="entertainment" className="part entertainment">
-                      <img rel='preload' loading='lazy' src={screen === 'mob' ? EntertainmentMobile 
-                      : screen === 'tab' ? EntertainmentTablet 
-                      : Entertainment} alt="" />
-                      <span className="shadow"></span>
-                  </div>
-                  <div id="learning-tracker" className="part learning-tracker">
-                      <img rel='preload' loading='lazy' src={screen === 'mob' ? LearningTrackerMobile 
-                      : screen === 'tab' ? LearningTrackerTablet 
-                      : LearningTracker} alt="" />
-                      <span className="shadow"></span>
-                  </div>
-                  <div id="central" className="part central">
-                      <img rel='preload' loading='lazy' src={screen === 'mob' ? CentralMobile 
-                      : screen === 'tab' ? CentralTablet 
-                      : Central} alt="" />
-                      <span className="shadow"></span>
-                  </div>
-                  <div id="sessions-manager" className="part sessions-manager">
-                      <img rel='preload' loading='lazy' src={screen === 'mob' ? SessionsManagerMobile 
-                      : screen === 'tab' ? SessionsManagerTablet 
-                      : SessionsManager} alt="" />
-                      <span className="shadow"></span>
-                  </div>
-                  <div id="goals" className="part goals">
-                      <img rel='preload' loading='lazy' src={screen === 'mob' ? GoalsMobile 
-                      : screen === 'tab' ? GoalsTablet 
-                      : Goals} alt="" />
-                      <span className="shadow"></span>
-                  </div>
-              </div>
+            <span className='show-tip' onClick={handleShowTip}>
+                <FaExclamation />
+            </span>
+            <div>
+                <div id="entertainment" data-title="Entertainment" className="part entertainment">
+                    <img rel='preload' loading='lazy' src={screen === 'mob' ? EntertainmentMobile 
+                    : screen === 'tab' ? EntertainmentTablet 
+                    : Entertainment} alt="" />
+                    <div className="part-title">
+                      <div>
+                      <h3>Entertainment</h3>
+                      </div>
+                    </div>
+                    <span className="shadow"></span>
+                </div>
+                <div id="learning-tracker" data-title="Learning Tracker" className="part learning-tracker">
+                    <img rel='preload' loading='lazy' src={screen === 'mob' ? LearningTrackerMobile 
+                    : screen === 'tab' ? LearningTrackerTablet 
+                    : LearningTracker} alt="" />
+                    <div className="part-title">
+                        <div>
+                        <h3>Learning Tracker</h3>
+                        </div>
+                    </div>
+                    <span className="shadow"></span>
+                </div>
+                <div id="central" data-title="The Central" className="part central">
+                    <img rel='preload' loading='lazy' src={screen === 'mob' ? CentralMobile 
+                    : screen === 'tab' ? CentralTablet 
+                    : Central} alt="" />
+                    <div className="part-title">
+                      <div>
+                      <h3>The Central</h3>
+                      </div>
+                    </div>
+                    <span className="shadow"></span>
+                </div>
+                <div id="sessions-manager" data-title="Sessions Manager" className="part sessions-manager">
+                    <img rel='preload' loading='lazy' src={screen === 'mob' ? SessionsManagerMobile 
+                    : screen === 'tab' ? SessionsManagerTablet 
+                    : SessionsManager} alt="" />
+                    <div className="part-title">
+                        <div>
+                        <h3>Sessions Manager</h3>
+                        </div>
+                    </div>
+                    <span className="shadow"></span>
+                </div>
+                <div id="goals" data-title="Goals" className="part goals">
+                    <img rel='preload' loading='lazy' src={screen === 'mob' ? GoalsMobile 
+                    : screen === 'tab' ? GoalsTablet 
+                    : Goals} alt="" />
+                    <div className="part-title">
+                          <div>
+                          <h3>Goals</h3>
+                          </div>
+                    </div>
+                    <span className="shadow"></span>
+                </div>
+            </div>
           </div>
 
           <div className="action-btns hide">
@@ -256,6 +362,8 @@ function Intro() {
 
           <audio className="one"src={domainExpansion}></audio>
           <audio className="two" src={audio}></audio>
+
+          {showPartDetails && createPortal(<PartDetails name={partName as string} description={partDescription as string} setShowPartDetails={setShowPartDetails} />, document.querySelector('.intro-page') as Element)}
 
       </div>
   )

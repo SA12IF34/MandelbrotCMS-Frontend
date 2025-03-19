@@ -18,6 +18,15 @@ function Search() {
   const myRateRef = useRef<HTMLSelectElement | null>(null);
 
   const [searchResults, setSearchResults] = useState<Entertainment[]>();
+  const [showGenres, setShowGenres] = useState<boolean>(false);
+  const genres: string[] = ['action', 'adventure', 'ai', 'arts', 'cars', 'comedy', 'dementia',
+    'demons', 'drama', 'ecchi', 'fantasy', 'sci-fi', 'game', 'harem',
+    'hentai', 'historical', 'horror', 'josei', 'kids', 'magic',
+    'martial', 'mecha', 'military', 'music', 'mystery', 'parody',
+    'police', 'power', 'psychological', 'romance', 'samurai', 'school',
+    'seinen', 'shoujo', 'shounen', 'space', 'sports',
+    'super', 'supernatural', 'thriller', 'vampire', 'yaoi', 'yuri', 
+    'cgdct', 'iyashikei', 'moe', 'slice of life'];
 
   async function handleSearch(searchQuery: string) {
     try {
@@ -27,7 +36,6 @@ function Search() {
 
       if (response.status === 200) {
         const data = await response.data;
-        console.log(data)
         setSearchResults(data);
       }
 
@@ -66,7 +74,6 @@ function Search() {
         }
       } 
     }
-    console.log(searchQuery)
     handleSearch(searchQuery);
 
   // eslint-disable-next-line
@@ -81,22 +88,27 @@ function Search() {
     const rate = rateRef.current?.value;
     const myRate = myRateRef.current?.value;
 
-    const searchQuery = `title=${title}&type=${encodeURIComponent(type as string)}&subtype=${subType}&status=${status}&special=${special}&rate=${rate}&user_rate=${myRate}`
+    let genreFilters: NodeListOf<Element> | string[] | string = document.querySelectorAll(".genres input:checked");
+    genreFilters = Array.from(genreFilters).map(genre => (genre as HTMLElement).id);
+    genreFilters = genreFilters.length > 0 ? genreFilters.join(',') : '';
+
+    // const searchQuery = `title=${title}&type=${encodeURIComponent(type as string)}&subtype=${subType}&status=${status}&special=${special}&rate=${rate}&user_rate=${myRate}`
 
     const params = new URLSearchParams(window.location.search);
 
     params.set('title', title || '');
-    params.set('type', encodeURIComponent(type as string) || '');
+    params.set('type', type || '');
     params.set('subtype', subType || '');
     params.set('status', status || '');
     params.set('special', special ? 'true' : 'false');
     params.set('rate', rate || '');
     params.set('user_rate', myRate || '');
-
+    params.set('genres', genreFilters);
+    
     const newUrl = `${window.location.pathname}?${params.toString()}`;
     window.history.replaceState({}, '', newUrl);
 
-    handleSearch(searchQuery);
+    handleSearch(params.toString());
   };
 
   return (
@@ -154,12 +166,19 @@ function Search() {
           <option value="9">9</option>
           <option value="10">10</option>
         </select>
-        {/* <div className='genres'>
-          <span>genres</span>
-          <div>
-            
+        <div className='genres'>
+          <span onClick={() => {setShowGenres((show) => !show)}} >genres</span>
+          <div className={`genres-container ${showGenres ? 'show': ''}`}>
+            {genres.map(genre => {
+              return (
+                <label key={genre} htmlFor={genre} className='genre'>
+                  <input onChange={handleChangeField} type="checkbox" id={genre} />
+                  <span>{genre === 'cgdct' ? genre.toUpperCase() : genre.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}</span>
+                </label>
+              )
+            })}
           </div>
-        </div> */}
+        </div>
       </div>
       <div className="results-container">
           {!searchResults ? (

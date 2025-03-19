@@ -1,4 +1,3 @@
-import {useEffect} from 'react';
 import { Location, useLocation } from 'react-router-dom'
 import { SlArrowRight } from "react-icons/sl";
 
@@ -18,9 +17,6 @@ interface styleProp {
 function MainLayout({children, style}: {children: React.ReactNode, style: styleProp}) {
   const location: Location = useLocation();
 
-  useEffect(() => {
-    console.log(location);
-  }, [location])
  
 
   const partsNavData: Array<partNav> = [
