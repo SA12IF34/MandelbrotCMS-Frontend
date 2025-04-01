@@ -416,6 +416,8 @@ button.start {
     font-size: 1.2em;
     line-height: 1.4em;
     text-align: center;
+    width: 100%;
+    max-width: 700px;
 }
 
 .part-details-container .close-details {

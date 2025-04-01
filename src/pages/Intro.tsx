@@ -49,19 +49,24 @@ function Intro() {
 
 
   const entertainmentDescription = `
-  I'm too lazy to write it's description today.I'm too lazy to write it's description today.
+  The part focused on entertainment which you can use to add any kind of entertainment materials automatically or manually,
+  organize the materials, and filter them with a very advanced search system. 
+  Also you can specify the materials which are special to you and they will have their own page.
   `;
   const learningTrackerDescription = `
-  I'm too lazy to write it's description today.
+  The part and system that you use to track and organize your learning in an easy way, 
+  you add courses by just entering their url whether it was a youtube or coursera url, 
+  and determine the state of the course if you are currently taking it, already have taken it, or will take it. 
   `;
   const centralDescription = `
-  I'm too lazy to write it's description today.
+  The core system which you use to manage your life on daily bases in regards of your projects, learning, achieving goals and rewarding yourself.
   `;
   const sessionsManagerDescription = `
-  I'm too lazy to write it's description today.
+  The part which is responsible for helping you whether you are studying, working or engaging in focused activities 
+  by allowing you to define projects that represent what you do and break it down into partitions so you can keep track of it.
   `;
   const goalsDescription = `
-  I'm too lazy to write it's description today.
+  The system that enable you to combine the features of all other parts to construct your goals, and track them in very easy, aggregative and enthusiastic way.
   `;
 
   useEffect(() => {
