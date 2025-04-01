@@ -1,31 +1,36 @@
-import React, {useEffect} from 'react';
-import ReactDOM from 'react-dom/client'
+import React, {useEffect, useContext} from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import Profile from './components/Profile';
-import Settings from './components/Settings';
+import { PopupContext } from './context/PopupContext';
+
 import ContentPopup from './components/ContentPopup';
+import Settings from './components/Settings';
+import Profile from './components/Profile';
+
 
 function Layout({children}: {children: React.ReactNode}) {
   const location = useLocation();
   const navigator = useNavigate();
 
+  const {setShowPopup, setPopup, showPopup, popup} = useContext(PopupContext)
+
   useEffect(() => {
 
-    const handleNav = (Container: React.ComponentType) => {
+    const handleNav = (label: 'profile' | 'settings') => {
       if (window.matchMedia('(max-width: 768px)').matches) {
         navigator('/central/'+window.location.hash.slice(1))
       } else {
-        handleOpenPopup(Container);
+        setShowPopup(true);
+        setPopup(label);
       }
     }
 
     switch (window.location.hash) {
       case '#profile':
-        handleNav(Profile);
+        handleNav('profile');
         break;
 
       case '#settings':
-        handleNav(Settings);
+        handleNav('settings');
         break;
 
       default:
@@ -39,18 +44,24 @@ function Layout({children}: {children: React.ReactNode}) {
     if (!window.matchMedia('(max-width: 768px)').matches) {
       e.preventDefault();
 
+      
       switch ((e.target as HTMLElement).id) {
         case 'profile':
           window.location.hash = 'profile';
-          handleOpenPopup(Profile);
+          setPopup('profile');
+          setShowPopup(true);
           break;
 
         case 'settings':
           window.location.hash = 'settings';
-          handleOpenPopup(Settings);
+          setPopup('settings');
+          setShowPopup(true);
           break;
       
         case 'stats':
+          break;
+        
+        case 'current-goal':
           break;
 
         default:
@@ -60,23 +71,6 @@ function Layout({children}: {children: React.ReactNode}) {
     }
   }
 
-  function handleOpenPopup(Container: React.ComponentType) {
-    if (document.getElementById('content-popup')) {
-      document.getElementById('content-popup')?.remove();
-    }
-
-    const mainContainer = document.querySelector('.main-container') as HTMLElement;
-    const container = document.createElement('div');
-    container.id = 'content-popup';
-    
-    ReactDOM.createRoot(container).render(
-      <ContentPopup>
-        <Container />
-      </ContentPopup>
-    );
-
-    mainContainer.appendChild(container);
-  }
 
   return (
     <>
@@ -85,13 +79,13 @@ function Layout({children}: {children: React.ReactNode}) {
         <Link id='profile' onClick={handleCheckNav} to={'/central/profile'}>
           <span id='profile'>Profile</span>
         </Link>
-        {/* <Link id='settings' onClick={handleCheckNav} to={'/settings'}>
+        <Link id='settings' onClick={handleCheckNav} to={'/central/settings'}>
           <span id='settings'>Settings</span>
-        </Link> */}
+        </Link>
         <Link id='stats' onClick={handleCheckNav} to={'/central/stats'}>
           <span id='stats'>Stats</span>
         </Link>
-        <Link id='#' onClick={handleCheckNav} to={'/central/#'}>
+        <Link id='current-goal' onClick={handleCheckNav} to={'/central/current-goal'}>
           <span>Current Goal</span>
         </Link>
       </div>
@@ -108,6 +102,12 @@ function Layout({children}: {children: React.ReactNode}) {
       </nav>
     </header>
     {children}
+    {showPopup && (
+        <ContentPopup>
+            {popup === 'profile' && <Profile />}
+            {popup === 'settings' && <Settings />}
+        </ContentPopup>
+    )}
     </>
   )
 }

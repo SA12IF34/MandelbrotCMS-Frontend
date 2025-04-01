@@ -1,11 +1,15 @@
 import React from 'react';
+import { PopupContext } from '../context/PopupContext';
 import { IoClose } from "react-icons/io5";
 
 function ContentPopup({children}: {children: React.ReactNode}) {
+
+  const {setShowPopup} = React.useContext(PopupContext);
+
   return (
     <div className='content-popup'>
-        <button onClick={(e) => {
-          (e.target as HTMLElement).parentElement?.parentElement?.remove();
+        <button onClick={() => {
+          setShowPopup(false);
           window.location.hash = '';
         }}>
           <IoClose />

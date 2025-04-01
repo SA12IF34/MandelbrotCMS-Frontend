@@ -180,6 +180,10 @@ button.start {
     position: relative;
 }
 
+.parts-container.none {
+    pointer-events: none !important;
+}
+
 .parts-container > span.show-tip {
     position: absolute;
     top: 20px;

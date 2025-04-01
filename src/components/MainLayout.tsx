@@ -1,5 +1,7 @@
+import React from 'react';
 import { Location, useLocation } from 'react-router-dom'
 import { SlArrowRight } from "react-icons/sl";
+
 
 interface partNav {
     href: string,
@@ -17,7 +19,6 @@ interface styleProp {
 function MainLayout({children, style}: {children: React.ReactNode, style: styleProp}) {
   const location: Location = useLocation();
 
- 
 
   const partsNavData: Array<partNav> = [
     { 

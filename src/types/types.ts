@@ -9,6 +9,16 @@ export interface Account {
   password?: string
 }
 
+// --------------------
+
+// Settings
+
+export interface Settings {
+  id?: number,
+  account?: number,
+  redirect_home: boolean,
+  intro_parts_nav: boolean
+}
 
 //----------------------
 

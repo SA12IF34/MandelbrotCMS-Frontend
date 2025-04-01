@@ -1,5 +1,7 @@
-import {useEffect, useState} from 'react';
+import {useEffect, useState, useContext} from 'react';
 import {createPortal} from 'react-dom';
+import { AuthContext } from '../context/AuthContext';
+import type { Settings } from '../types/types';
 import {FaExclamation} from 'react-icons/fa6';
 import '../styles/intro.css';
 
@@ -43,6 +45,8 @@ function Intro() {
   const [partName, setPartName] = useState<string>();
   const [partDescription, setPartDescription] = useState<string>();
 
+  const {settings, setSettings} = useContext(AuthContext) as {settings: Settings, setSettings: (settings: Settings) => void};
+
 
   const entertainmentDescription = `
   I'm too lazy to write it's description today.I'm too lazy to write it's description today.
@@ -60,52 +64,8 @@ function Intro() {
   I'm too lazy to write it's description today.
   `;
 
-  const handleCheckAuth = async () => {
-    try {
-      const response = await createApi(import.meta.env.VITE_API_BASE_URL).get('authentication/apis/check-auth/');
-      
-      if (response.status === 200) {
-        setAuthenticated(true);
-      }
-
-    } catch(error) {
-        if (error instanceof AxiosError) {
-            if (error.response?.status === 500) {
-                console.error(error);
-            }
-        }
-        setAuthenticated(false);
-        console.log(error);
-    }
-  }
-
-  const startSecondStage = () => {
-    const page = document.querySelector('.intro-page') as HTMLDivElement;
-    // (page.querySelector('audio.two') as HTMLAudioElement).play();
-    (page.querySelector('.container') as HTMLElement).remove();
-    (page.querySelector('button.start') as HTMLElement).remove();
-    
-    const newContainer = document.createElement('div');
-    newContainer.classList.add('new-container');
-
-    const title = document.createElement('h1');
-    title.textContent = 'MandelbrotCMS';
-
-    newContainer.append(title);
-
-    (page.querySelector('.domain-container') as HTMLElement).before(newContainer);
-    handlePartsInteraction();
-    
-    const lastTime = setTimeout(() => {
-        (page.querySelector('.action-btns') as HTMLElement).classList.remove('hide');
-        clearTimeout(lastTime);
-    }, 3800)
-  
-  }
-
-  const handlePartsInteraction = () => {
+  useEffect(() => {
     const parts = document.querySelectorAll('.part') as NodeListOf<HTMLDivElement>;
-
     parts.forEach((part: Element) => {
         part.addEventListener('mouseover', () => {
             part.classList.add('hover');
@@ -116,6 +76,11 @@ function Intro() {
         });
 
         part.addEventListener('click', () => {
+            
+            if (settings && settings.intro_parts_nav) {
+                location.assign(`/${part.id}`);
+            }
+
             part.classList.add('selected');
            
             switch (part.id) {
@@ -142,12 +107,89 @@ function Intro() {
                 default:
                     break;
             }
+            
+            
+            
 
             setShowPartDetails(true);
 
         })
     })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [settings]);
+
+  const handleCheckAuth = async () => {
+    try {
+      const response = await createApi(import.meta.env.VITE_API_BASE_URL).get('authentication/apis/check-auth/');
+      
+      if (response.status === 200) {
+        setAuthenticated(true);
+        handleGetSettings();
+      }
+
+    } catch(error) {
+        if (error instanceof AxiosError) {
+            if (error.response?.status === 500) {
+                console.error(error);
+            }
+        }
+        setAuthenticated(false);
+        console.log(error);
+    }
   }
+
+  const handleGetSettings = async () => {
+      try {
+          if (!localStorage.getItem('settings')) {
+              const response = await createApi(import.meta.env.VITE_API_BASE_URL).get('authentication/apis/settings/');
+              if (response.status === 200) {
+                  const data = await response.data
+                  setSettings(data as Settings);
+                  localStorage.setItem('settings', JSON.stringify(data));
+                  data.redirect_home && location.assign('/central');
+              }
+          } else {
+              const data = JSON.parse(localStorage.getItem('settings') as string) as Settings;
+              setSettings(data);
+              data.redirect_home && location.assign('/central');
+
+          }
+
+      } catch(error) {
+          if (error instanceof AxiosError) {
+              if (error.response?.status === 500) {
+                  console.error(error);
+              }
+          }
+          console.log(error);
+      }
+  }
+
+
+  const startSecondStage = () => {
+    const page = document.querySelector('.intro-page') as HTMLDivElement;
+    // (page.querySelector('audio.two') as HTMLAudioElement).play();
+    (page.querySelector('.container') as HTMLElement).remove();
+    (page.querySelector('button.start') as HTMLElement).remove();
+    
+    const newContainer = document.createElement('div');
+    newContainer.classList.add('new-container');
+
+    const title = document.createElement('h1');
+    title.textContent = 'MandelbrotCMS';
+
+    newContainer.append(title);
+
+    (page.querySelector('.domain-container') as HTMLElement).before(newContainer);
+    
+    const lastTime = setTimeout(() => {
+        (page.querySelector('.action-btns') as HTMLElement).classList.remove('hide');
+        clearTimeout(lastTime);
+    }, 3800)
+  
+  }
+
+
 
   const handleShowTip = () => {
     let action = 'Click';
@@ -213,13 +255,14 @@ function Intro() {
         btn.style.display = 'none';
 
         const time2 = setTimeout(() => {
-            
             domain.classList.add('expand');
             clearTimeout(time2);
         }, 3500);
 
         const time3 = setTimeout(() => {
+            partsContainer.classList.remove('none');
             partsContainer.classList.add('show');
+
             startSecondStage();
             clearTimeout(time3);
         }, 13000)
@@ -284,7 +327,7 @@ function Intro() {
               <img src={mandelbrotSet} alt="" />
           </div>
 
-          <div className="parts-container">
+          <div className="parts-container none">
             <span className='show-tip' onClick={handleShowTip}>
                 <FaExclamation />
             </span>
