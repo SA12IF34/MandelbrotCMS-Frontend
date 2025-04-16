@@ -3,6 +3,9 @@ import { Link } from 'react-router-dom';
 import { createApi } from '../api';
 import { AxiosError } from 'axios';
 
+import GoogleLogin from '../components/GoogleLogin';
+import GithubLogin from '../components/GithubLogin';
+
 import '../styles/index.css'
 
 
@@ -49,6 +52,11 @@ function Login() {
             <input required ref={emailRef} type="email" placeholder='Email' />
             <input required ref={passwordRef} type="password" placeholder='Password' />
             <input type="submit" value="Submit" />
+            <span style={{textAlign: 'center'}}>Or login with</span>
+            <div className='OAuthContainer'>
+              <GoogleLogin />
+              <GithubLogin />
+            </div>
             <span style={{textAlign: 'center'}}>Don't have an account? <Link to={'/register'}>create one</Link></span>
         </form>
     </div>

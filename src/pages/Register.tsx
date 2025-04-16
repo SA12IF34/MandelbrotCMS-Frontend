@@ -3,6 +3,9 @@ import { Link } from 'react-router-dom';
 import { createApi } from '../api';
 import { AxiosError } from 'axios';
 
+import GoogleLogin from '../components/GoogleLogin';
+import GithubLogin from '../components/GithubLogin';
+
 import '../styles/index.css'
 
 const api = createApi(import.meta.env.VITE_API_BASE_URL+'authentication/apis/');
@@ -55,6 +58,11 @@ function Register() {
             <input required ref={emailRef} type="email" placeholder='Email' />
             <input required ref={passwordRef} type="password" placeholder='Password' />
             <input type="submit" value="Submit" />
+            <span style={{textAlign: 'center'}}>Or signup with</span>
+            <div className='OAuthContainer'>
+              <GoogleLogin />
+              <GithubLogin />
+            </div>
             <span style={{textAlign: 'center'}}>Already have an account? <Link to={'/login'}>Login</Link></span>
         </form>
     </div>
