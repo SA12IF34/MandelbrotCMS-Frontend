@@ -15,6 +15,9 @@ function Settings() {
 
   const {settings, setSettings} = useContext(AuthContext as React.Context<ContextType>) ;
 
+  const enteratinmentTypeRef = React.useRef<HTMLSelectElement | null>(null)
+  const [prevTypeVal, setPrevTypeVal] = React.useState<string>('');
+
   async function handleGetSettings() {
     try {
       if (localStorage.getItem('settings')) {
@@ -72,6 +75,12 @@ function Settings() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  useEffect(() => {
+    if (settings) {
+      setPrevTypeVal(settings.default_entertainment_type);
+    }
+  }, [settings]);
+
   return (
     <div className='settings-container'>
       <section className="settings-options">
@@ -92,6 +101,25 @@ function Settings() {
               value={settings.intro_parts_nav}
               handleChange={handleUpdateSettings}
             />
+
+            <div className="entertainment-type">
+              <span>Entertainment Default Material Type: </span>
+              <select value={prevTypeVal} ref={enteratinmentTypeRef} onChange={async () => {
+                const newValue = enteratinmentTypeRef.current?.value;
+                const prevValue = prevTypeVal;
+                setPrevTypeVal(newValue as string);
+                
+                if (!(await handleUpdateSettings({ default_entertainment_type: newValue }))) {
+                  // if update fails, revert to previous value
+                  setPrevTypeVal(prevValue);
+                }
+              }} >
+                <option value="anime&manga">Anime & Manga</option>
+                <option value="shows&movies">Shows & Movies</option>
+                <option value="game">Games</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
           </>)}
         </div>
       </section>

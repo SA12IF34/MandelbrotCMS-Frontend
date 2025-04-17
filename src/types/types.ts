@@ -17,9 +17,10 @@ export interface Settings {
   id?: number,
   account?: number,
   redirect_home: boolean,
-  intro_parts_nav: boolean
+  intro_parts_nav: boolean,
+  default_entertainment_type: string
 }
-
+ 
 //----------------------
 
 interface BaseObj {

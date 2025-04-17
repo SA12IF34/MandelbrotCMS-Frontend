@@ -895,14 +895,13 @@ Settings
     height: max-content;
     display: flex;
     flex-direction: column;
-    row-gap: 10px;
+    row-gap: 15px;
     column-gap: 10px;
 }
 
 .toggle-setting {
     display: flex;
     align-items: center;
-    column-gap: 10px;
 }
 
 .toggle-setting input {
@@ -918,6 +917,11 @@ Settings
     background-color: var(--tertiary-c);
     border-radius: 50px;
     cursor: pointer;
+    margin-right: 5px;
+}
+
+.toggle-setting > span:nth-child(3) {
+    margin-left: 5px;
 }
 
 .setting-slider::before {
@@ -939,6 +943,16 @@ Settings
 .toggle-setting > input:checked + .setting-slider::before {
     left: calc(100% - 19px);
     background-color: var(--tertiary-c);
+}
+
+.entertainment-type select {
+    padding: 5px;
+    border-radius: 5px;
+    border: none;
+    outline: none;
+    background-color: var(--secondary-c);
+    color: var(--tertiary-c);
+    font-size: 0.9em;
 }
 
 

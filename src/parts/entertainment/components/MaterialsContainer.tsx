@@ -83,6 +83,18 @@ function MaterialsContainer({materials, status='', currentActive='anime&manga', 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [active, materials, animeAndManga, showsAndMovies, game, other]);
 
+  useEffect(() => {
+    setActive(currentActive)
+
+    const types = document.querySelectorAll(`.materials-container.${status} .types button`);
+
+    types.forEach(type => {
+        type.classList.remove('active');
+    })
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentActive])
+
   function handleGoLeft() {
     const container = document.querySelector(`.materials-container.${(status || currentActive).replace('&', '\\&')} .materials`);
     if (container) {
