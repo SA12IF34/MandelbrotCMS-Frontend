@@ -107,6 +107,13 @@ function CreateNewList({title}: {title: string}) {
       }
 
     } catch (error) {
+
+      if (error instanceof AxiosError) {
+        if (error.status === 409) {
+          alert('You already have a list with this date.');
+        }
+      } 
+
       return handleError(error);
     }
   }
