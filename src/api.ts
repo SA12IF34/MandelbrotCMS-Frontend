@@ -30,6 +30,22 @@ export function handleError(error: unknown) {
 }
 
 
+export async function handleGetSettings() {
+    try {
+        const response = await axios.get(import.meta.env.VITE_API_BASE_URL+'authentication/apis/settings/');
+
+        if (response.status === 200) {
+            const data = await response.data;
+            localStorage.setItem('settings', JSON.stringify(data));
+            return data;
+        }
+
+    } catch (error) {
+        handleError(error);
+    }
+}
+
+
 export async function handleGetProject(id: number) {
     try {
         const response = await axios.get(

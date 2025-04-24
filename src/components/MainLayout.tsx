@@ -1,7 +1,8 @@
 import React from 'react';
-import { Location, useLocation } from 'react-router-dom'
+import { Location, useLocation } from 'react-router-dom';
 import { SlArrowRight } from "react-icons/sl";
-
+import { AuthContext, AuthContextType } from '../context/AuthContext';
+import { handleGetSettings } from '../api';
 
 interface partNav {
     href: string,
@@ -18,7 +19,8 @@ interface styleProp {
 
 function MainLayout({children, style}: {children: React.ReactNode, style: styleProp}) {
   const location: Location = useLocation();
-
+  
+  const {settings, setSettings} = React.useContext<AuthContextType>(AuthContext) as AuthContextType;
 
   const partsNavData: Array<partNav> = [
     { 
@@ -46,6 +48,28 @@ function MainLayout({children, style}: {children: React.ReactNode, style: styleP
     document.querySelector('.main-layout')?.classList.toggle('side-bar-open');
   }
 
+
+  React.useEffect(() => {
+    if (!settings) {
+        const fetchSettings = async () => {
+            const data = await handleGetSettings();
+            if (data) {
+                setSettings && setSettings(data);
+            }
+        }
+        fetchSettings();
+    } else {
+        if (settings.open_sidenav) {
+            if (window.matchMedia('(min-width: 768px)').matches) {
+                document.querySelector('.side-nav')?.classList.remove('close');
+                (document.querySelector('.toggle-container') as HTMLElement).style.cssText = 'display: none;';
+                document.querySelector('.main-layout')?.classList.add('side-bar-open');
+            }
+        }
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [settings])
 
   return (
     <div className={`main-layout ${style.layout}`}>

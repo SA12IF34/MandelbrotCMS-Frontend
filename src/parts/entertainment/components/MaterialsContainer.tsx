@@ -86,7 +86,7 @@ function MaterialsContainer({materials, status='', currentActive='anime&manga', 
   useEffect(() => {
     setActive(currentActive)
 
-    const types = document.querySelectorAll(`.materials-container.${status} .types button`);
+    const types = document.querySelectorAll(`.materials-container${status && '.'+status} .types button`);
 
     types.forEach(type => {
         type.classList.remove('active');

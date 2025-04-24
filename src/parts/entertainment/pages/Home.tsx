@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext} from 'react';
 import { api, handleError } from '../api';
-import { createApi } from '../../../api';
+import { handleGetSettings } from '../../../api';
 import { Entertainment } from '../../../types/types';
 
 import { AuthContext, type AuthContextType } from '../../../context/AuthContext';
@@ -29,31 +29,17 @@ function Home() {
   const {settings, setSettings} = useContext<AuthContextType>(AuthContext);
 
 
+
   async function handleRetrieveSettings() {
-    try {
-      const response = await createApi(import.meta.env.VITE_API_BASE_URL+'authentication/apis/').get('settings/');
-
-      if (response.status === 200) {
-        const data = await response.data;
-
-        if (setSettings) {
-          setSettings(data);
-          localStorage.setItem('settings', JSON.stringify(data));
-        }
-      }
-      
-    } catch (error) {
-      handleError(error);
-    }
-  }
-
-  function handleGetSettings() {
     if (settings) {
       return;
     } else if (localStorage.getItem('settings')) {
       setSettings && setSettings(JSON.parse(localStorage.getItem('settings') as string));
     } else {
-      handleRetrieveSettings();
+      const data = await handleGetSettings();
+      if (data) {
+        setSettings && setSettings(data);
+      }
     }
 
     return;
@@ -78,7 +64,7 @@ function Home() {
 
   useEffect(() => {
     handleGetAllMaterials();
-    handleGetSettings()
+    handleRetrieveSettings()
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 

@@ -18,7 +18,8 @@ export interface Settings {
   account?: number,
   redirect_home: boolean,
   intro_parts_nav: boolean,
-  default_entertainment_type: string
+  default_entertainment_type: string,
+  open_sidenav: boolean
 }
  
 //----------------------

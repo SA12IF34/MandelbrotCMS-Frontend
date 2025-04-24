@@ -100,7 +100,7 @@ function List() {
           <h2>Reward</h2>
           <div className={`reward-container ${reward.locked && 'locked'}`}>
                 
-            <a onClick={(e) => {reward.locked && e.preventDefault()}} href={`/entertainment/${reward.id}/`}>
+            <a onClick={(e) => {reward.locked && e.preventDefault()}} href={`/entertainment/materials/${reward.id}/`}>
               <div className={`reward-img`}>
                 <img src={reward.image} alt="" />
               </div>

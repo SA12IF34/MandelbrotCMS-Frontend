@@ -5,7 +5,8 @@ import { AuthContext } from "../../../context/AuthContext";
 import type { Settings as SettingsType } from '../../../types/types';
 
 import { createApi, handleError } from '../api';
-import { AxiosError } from 'axios';
+import { handleGetSettings } from '../../../api';
+
 
 const api = createApi(import.meta.env.VITE_API_BASE_URL+'authentication/')
 
@@ -17,35 +18,6 @@ function Settings() {
 
   const enteratinmentTypeRef = React.useRef<HTMLSelectElement | null>(null)
   const [prevTypeVal, setPrevTypeVal] = React.useState<string>('');
-
-  async function handleGetSettings() {
-    try {
-      if (localStorage.getItem('settings')) {
-        setSettings(
-          JSON.parse(localStorage.getItem('settings') as string) as SettingsType
-        )
-
-      } else {
-        const response = await api.get('apis/settings/');
-
-        if (response.status === 200) {
-          const data = await response.data;
-          localStorage.setItem('settings', JSON.stringify(data));
-          console.log(data)
-
-          setSettings(data as SettingsType);
-        }
-      }
-    } catch (error) {
-      if (error instanceof AxiosError) {
-        handleError(error);
-      } else {
-        alert('Something went wrong while fetching settings. Please try again later.');
-        console.error(error);
-      }
-
-    }
-  }
 
   async function handleUpdateSettings(data: object): Promise<boolean> {
     try {
@@ -70,7 +42,15 @@ function Settings() {
   }                                                                          
 
   useEffect(() => {
-    handleGetSettings();
+    if (!settings) {
+      const fetchSettings = async () => {
+          const data = await handleGetSettings();
+          if (data) {
+              setSettings(data);
+          }
+      }
+      fetchSettings();
+    }
     
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
@@ -99,6 +79,13 @@ function Settings() {
               label={'Navigate to Parts from Intro Page'}
               setting={'intro_parts_nav'}
               value={settings.intro_parts_nav}
+              handleChange={handleUpdateSettings}
+            />
+
+            <ToggleSetting 
+              label={'Always Open Side Navigation'}
+              setting={'open_sidenav'}
+              value={settings.open_sidenav}
               handleChange={handleUpdateSettings}
             />
 
