@@ -19,7 +19,8 @@ export function handleError(error: unknown) {
             alert('Please make sure you entered all required data correctly.')
         } else if ((error.status === 403 || error.status === 401) 
                     && (!window.location.pathname.includes('login') 
-                    && !window.location.pathname.includes('register'))) {
+                    && !window.location.pathname.includes('register')
+                    && !(window.location.pathname === '/'))) {
             window.location.assign('/login');
         }
     
