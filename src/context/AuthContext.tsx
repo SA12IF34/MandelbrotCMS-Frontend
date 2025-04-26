@@ -14,13 +14,15 @@ export const AuthContextProvider = ({children}: {children: ReactNode}) => {
     const Provider = AuthContext.Provider;
 
     useEffect(() => {
-        const fetchSettings = async () => {
-            const data = await handleGetSettings();
-            if (data) {
-                setSettings(data);
+        if (!window.location.pathname.includes('login') && !window.location.pathname.includes('register')) {
+            const fetchSettings = async () => {
+                const data = await handleGetSettings();
+                if (data) {
+                    setSettings(data);
+                }
             }
+            fetchSettings();
         }
-        fetchSettings();
     }, [])
 
 
