@@ -55,7 +55,7 @@ function DownloadList() {
         <button className={'download-btn'} onClick={() => {handleDownloadTXT(noteTitle as string, noteContent as string)}}>Download .txt</button>
         {noteContentPDF && noteContentPDF.length > 0 && (
           <PDFDownloadLink className={'download-btn'} document={<NotePdf noteName={noteTitle} noteContent={noteContentPDF} noteDrawnContent={noteDrawnContent} noteUploadedImage={noteUploadedImage} />} fileName={`${noteTitle}.pdf`}>
-            {({ blob, url, loading, error }) =>
+            {({loading}) =>
               loading ? 'Loading document...' : 'Download .pdf'
             }
           </PDFDownloadLink>
