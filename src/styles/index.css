@@ -94,8 +94,9 @@ a {
 }
 
 .sep {
-  width: 80%;
+  width: 10%;
   height: 1px;
+  border-radius: 99px;
 }
 
 .side-nav-list > li > a {
@@ -233,6 +234,12 @@ button.logout {
   width: 25px;
   height: 25px;
   color: black;
+}
+
+@media screen and (max-width: 1024px) and (min-width: 769px) {
+  .nav-item span {
+    font-size: 0.85em;
+  }
 }
 
 @media screen and (max-width: 768px) {

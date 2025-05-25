@@ -131,3 +131,18 @@ export interface Goal extends BaseObj {
   done: boolean ,
   progress?: number
 }
+
+// Notes
+
+type BaseObjWithoutDescription = Omit<BaseObj, 'description' | 'title'>;
+export interface Note extends BaseObjWithoutDescription {
+  title: string | null | undefined,
+  content: string,
+  drawn_content?: string | null,
+  uploaded_file?: string | null,
+  project?: number | null,
+  learning_material?: number | null,
+  entertainment_material?: number | null,
+  goal?: number | null,
+  missions_list?: number | null
+}
