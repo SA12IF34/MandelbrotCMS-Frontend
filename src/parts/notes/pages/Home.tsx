@@ -37,7 +37,8 @@ function Home() {
           <NoteElement 
             key={note.id} 
             noteId={note.id} 
-            title={note.title as string} 
+            title={note.title} 
+            content={note.content}
             createDate={note.create_date} 
           />
         )) 
