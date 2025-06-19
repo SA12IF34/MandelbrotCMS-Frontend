@@ -12,6 +12,10 @@ function Project() {
   const [project, setProject] = useState<Project>();
   const [editStartDate, setEditStartDate] = useState<boolean>(false);
   const [editFinishDate, setEditFinishDate] = useState<boolean>(false);
+  const [editTitle, setEditTitle] = useState<boolean>(false);
+  const [editDescription, setEditDescription] = useState<boolean>(false);
+  const [title, setTitle] = useState<string>('');
+  const [desc, setDesc] = useState<string>('');
   const startDateRef = useRef<HTMLInputElement>(null);
   const finishDateRef = useRef<HTMLInputElement>(null);
   const {id} = useParams();
@@ -24,6 +28,8 @@ function Project() {
       if (response.status === 200) {
         const data = await response.data;
         document.title = data['title']
+        setTitle(data['title']);
+        setDesc(data['description']);
         setProject(data);
       }
 
@@ -88,9 +94,9 @@ function Project() {
     }
   }
 
-  async function handleCompletePartition(partitionID: number) {
+  async function handleUpdatePartition(partitionID: number, done: boolean) {
     try {
-      const response = await api.patch(`partitions/${partitionID}/`, {done: true});
+      const response = await api.patch(`partitions/${partitionID}/`, {done: done});
 
       if (response.status === 202) {
         handleGetProjectData();
@@ -116,9 +122,61 @@ function Project() {
       ) : (
         <>
           <div className="info">
-            <h2>{project.title}</h2>
+            {editTitle ? (
+              <div>
+                <input autoFocus
+                       onChange={(e) => {setTitle(e.target.value)}} 
+                       type="text" id="title" 
+                       value={title}
+                 />
+                <button className="prepare-btn">
+                  <IoCheckmark onClick={() => {
+                    const input = document.getElementById('title') as HTMLInputElement
+                    if (input?.value) {
+                      handleUpdateProject({title: input?.value});
+                      setEditTitle(false);
+                    } else {
+                      setEditTitle(false);
+                    }
+                  }} />
+                </button>
+              </div>
+            ): (
+              <h2>
+                {project.title}
+                <button onClick={() => {setEditTitle(val => !val)}} className="prepare-btn">
+                  <CiEdit />
+                </button>
+              </h2>
+            )}
             <br />
-            <p>{project.description}</p>
+            {editDescription ? (
+              <div>
+                <textarea autoFocus
+                          name="desc" id="desc" 
+                          onChange={(e) => {setDesc(e.target.value)}} 
+                          value={desc}
+                ></textarea>
+                <button className="prepare-btn" onClick={() => {
+                  const input = document.getElementById('desc') as HTMLTextAreaElement
+                  if (input?.value) {
+                    handleUpdateProject({description: input?.value});
+                    setEditDescription(false);
+                  } else {
+                    setEditDescription(false);
+                  }
+                }}>
+                  <IoCheckmark />
+                </button>
+              </div>
+            ): (
+                <p>
+                  {project.description}
+                  <button onClick={() => {setEditDescription(val => !val)}} className="prepare-btn">
+                    <CiEdit />
+                  </button>
+                </p>
+              ) }
           </div>
           <div className="dates">
             <div style={{alignItems: 'center'}}>
@@ -192,11 +250,15 @@ function Project() {
                       <br />
                       <p>{partition.description}</p>
                     </>)}
-                    {!partition.done && (
-                      <button onClick={() => {handleCompletePartition(partition.id)}} title='complete partition' className='complete-partition prepare-btn'>
+                    {!partition.done ? (
+                      <button onClick={() => {handleUpdatePartition(partition.id, true)}} title='complete partition' className='complete-partition prepare-btn'>
                         <IoCheckmark />
                       </button>
-                    )}
+                    ) : (
+                      <button onClick={() => {handleUpdatePartition(partition.id, false)}} className='partition-done'>
+                        Completed
+                      </button>
+                    ) }
                     <button onClick={() => {handleRemovePartition(partition.id)}} title='remove partition' className='remove-partition prepare-btn'>
                       <IoClose />
                     </button>

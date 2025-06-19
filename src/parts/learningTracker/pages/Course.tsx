@@ -109,7 +109,7 @@ function Course() {
   useEffect(() => {
 
     if (window.matchMedia('(max-width: 545px)').matches) {
-        setMaxLinkLength(20);
+        setMaxLinkLength(18);
     }
 
     handleGetCourse();

@@ -107,6 +107,31 @@ Project Page
     row-gap: 40px;
 }
 
+.project-page div.info > * {
+    width: max-content;
+    max-width: 700px;
+    position: relative;
+    overflow: visible;
+}
+
+.project-page div.info > * > button{
+    position: absolute;
+    left: 100%;
+    top: 0%;
+}
+
+.project-page div.info h2 > button,
+.project-page div.info p > button {
+    opacity: 0;
+}
+
+.project-page div.info h2:hover > button,
+.project-page div.info p:hover > button {
+    opacity: 1;
+}
+
+
+
 .dates {
     display: flex;
     justify-content: start;
@@ -142,7 +167,12 @@ Project Page
 
 .partition > h3,
 .partition > p {
-    width: max-content;
+    width: auto;
+
+}
+
+.partition > h3 {
+    max-width: 75%;
 }
 
 .partition.done {
@@ -151,13 +181,16 @@ Project Page
     text-decoration-color: var(--c5);
 }
 
-.partition.done::after {
-    content: 'completed';
+.partition-done {
     position: absolute;
     top: 10px;
     right: 20px;
     font-size: 1em;
     font-style: italic;
+    background-color: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
 }
 
 .prepare-btn {
@@ -235,7 +268,8 @@ section.info > div > label {
 }
 
 section.info > div > label,
-section.info > div > input {
+section.info > div > input,
+div.info #title {
     font-size: 1.5em;
 }
 
@@ -243,7 +277,8 @@ section.info > div > input {
     width: 250px;
 }
 
-section.info > div > textarea {
+section.info > div > textarea,
+div.info #desc {
     width: 350px;
     height: 150px;
     font-size: 1em;
@@ -252,7 +287,9 @@ section.info > div > textarea {
 section.info > div > input,
 section.info > div > textarea,
 .partition-form > div:nth-child(1) > input,
-.partition-form > div:nth-child(1) > textarea {
+.partition-form > div:nth-child(1) > textarea,
+div.info #title,
+div.info #desc {
     padding: 10px;
     border: none;
     outline: none;
@@ -351,6 +388,20 @@ Media Queries
 
 @media screen and (max-width: 545px) {
 
+    h1 {
+        font-size: 1.6em;
+    }
+
+    h2,
+    section.info > div > label, section.info > div > input {
+        font-size: 1.3em !important;
+    }
+
+    h3,
+    section.dates label, section.dates input[type="date"] {
+        font-size: 1.1em !important;
+    }
+
     .sm-nav {
         box-shadow: -2px -2px 5px 0px var(--c4) inset;
     }
@@ -358,16 +409,39 @@ Media Queries
     header nav {
         justify-content: space-between;
         column-gap:normal;
-        
+        font-size: 0.92em;
     }
 
     .projects-container > a {
         width: 100%;
     }
 
+    .page {
+        padding: 20px;
+    } 
+
     /* 
     Project Page
     */
+
+    div.info > * {
+        max-width: fit-content !important;
+    }
+
+    div.info > * > button {
+        position: relative !important;
+        display: inline-flex;
+        transform: translateY(25%);
+        top: auto;
+        right: auto;
+        left: auto !important;
+        opacity: 1 !important;
+    }
+
+    div.info #title,
+    div.info #desc {
+        max-width:300px;
+    }
 
     .dates  {
         flex-direction: column;
@@ -383,6 +457,10 @@ Media Queries
     .partition {
         height: max-content;
         min-height: 70px;
+    }
+
+    .partition > p {
+        font-size: 0.92em;
     }
 
     button.complete-partition,

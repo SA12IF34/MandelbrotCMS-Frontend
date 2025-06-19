@@ -41,7 +41,7 @@ export interface Mission {
   content: string,
   project?: number | Project | null ,
   course?: number | Course | null,
-  status?: string,
+  status: 'pending' | 'working' | 'done',
   list?: number,
   related?: Project | Course | RelatedObj
 }

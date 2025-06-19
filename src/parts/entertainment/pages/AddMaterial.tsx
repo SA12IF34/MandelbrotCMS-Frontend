@@ -104,7 +104,7 @@ function AddMaterial() {
       <div className="by-link">
         <h2>Add Material by Link</h2>
         <div className="field-container">
-          <input ref={linkRef} type="text" placeholder='Enter MAL, anilist, steam, or rotten tomatoes link' />
+          <input ref={linkRef} type="text" title="Enter MAL, anilist, steam, IMDB or rotten tomatoes link" placeholder='Enter MAL, anilist, steam, IMDB or rotten tomatoes link' />
           <select ref={statusRef} defaultValue={''}>
             <option value="">Status</option>
             <option value="current">Current</option>

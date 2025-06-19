@@ -17,10 +17,11 @@ function Layout({children}: {children: React.ReactNode}) {
         <Link className={location.pathname.includes('/add-material') ? 'current-page' : ''} to={'/entertainment/add-material/'}>Add New</Link>
         <Link className={location.pathname.includes('/special') ? 'current-page' : ''} to={'/entertainment/special/'}>Special</Link>
         <Link className={location.pathname.includes('/search') ? 'current-page' : ''} to={'/entertainment/search'}>Search</Link>
+        <button>
+          {theme === 'light' ? <MdLightMode onClick={() => {handleSetTheme && handleSetTheme('dark')}} /> : <MdDarkMode onClick={() => {handleSetTheme && handleSetTheme('light')}} />}
+        </button>
       </nav>
-      <button>
-        {theme === 'light' ? <MdLightMode onClick={() => {handleSetTheme && handleSetTheme('dark')}} /> : <MdDarkMode onClick={() => {handleSetTheme && handleSetTheme('light')}} />}
-      </button>
+      
     </header>
     {children}
     </>

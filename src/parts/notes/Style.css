@@ -366,16 +366,41 @@ nav a {
 }
 
 @media screen and (max-width: 550px) {
+
+    nav {
+        font-size: 0.9em;
+    }
+
+    #note-title {
+        font-size: 1.6em;
+    }
+
+    h2 {
+        font-size: 1.3em
+    }
+
+    h3, #note-content {
+        font-size: 1.1em;
+    }
+
+    
+
+    .note-page, .new-note-page {
+        padding: 0 20px;
+    }
+
+    .page:not(.note-page, .new-note-page) {
+        padding: 20px;
+    }
+
     .note-element {
         aspect-ratio: 1/0.25;
     }
 
     .note-element > span {
-        font-size: 0.8em;
+        font-size: 0.9em;
     }
-    .note-element > h2 {
-        font-size: 1.1em;
-    }
+
 
     .note-header {
         width: 100%;

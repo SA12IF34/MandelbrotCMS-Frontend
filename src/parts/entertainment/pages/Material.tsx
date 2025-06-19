@@ -43,8 +43,22 @@ function Material() {
       handleError(error);
     }
   }
+  async function handleUpdateMaterial() {
+    try {
+      const response = await api.patch(`materials/${id}/update/`);
 
-  async function handleUpdateMaterial(data: object) {
+      if (response.status === 202) {
+        // const data = await response.data;
+        // setMaterial(data);
+        window.location.reload()
+      }
+
+    } catch (error) {
+      handleError(error)
+    }
+  }
+
+  async function handleEditMaterial(data: object) {
     try {
       const response = await api.patch(`materials/${id}/`, data);
       if (response.status === 202) {
@@ -155,7 +169,7 @@ function Material() {
                         autoFocus
                       />
                       <button onClick={(e) => {
-                        handleUpdateMaterial({rate: ((e.target as HTMLElement).parentElement?.firstElementChild as HTMLInputElement)?.value})
+                        handleEditMaterial({rate: ((e.target as HTMLElement).parentElement?.firstElementChild as HTMLInputElement)?.value})
                         setChangeAvgRate(false);
                       }}>
                         <IoCheckmark style={{pointerEvents: 'none'}} />
@@ -178,7 +192,7 @@ function Material() {
                       />
                       <button onClick={(e) => {
 
-                        handleUpdateMaterial({user_rate: ((e.target as HTMLElement).parentElement?.firstElementChild as HTMLInputElement)?.value})
+                        handleEditMaterial({user_rate: ((e.target as HTMLElement).parentElement?.firstElementChild as HTMLInputElement)?.value})
                         setChangeUserRate(false);
                       }}>
                         <IoCheckmark style={{pointerEvents: 'none'}} />
@@ -192,17 +206,19 @@ function Material() {
                 </div>
                 <br />
                 <a href={material.link} target='_blank' className="link">{material.link}</a>
+                <br />
+                <button onClick={handleUpdateMaterial} className="update-btn">Update</button>
               </div>
               <div>
                 <select onChange={(e) => {
-                  handleUpdateMaterial({status: e.target.value})
+                  handleEditMaterial({status: e.target.value})
                 }} className='status' defaultValue={material['status']} >
                   <option selected={material['status'] === 'current' ? true : false} value={'current'}>current</option>
                   <option selected={material['status'] === 'done' ? true : false} value={'done'}>done</option>
                   <option selected={material['status'] === 'future' ? true : false} value={'future'}>future</option>
                 </select>
                 <button onClick={() => {
-                  handleUpdateMaterial({special: !material.special})
+                  handleEditMaterial({special: !material.special})
                 }} className={material.special ? 'special' : ''}>
                   {material.special ? 'Special' : 'Not Special'}
                 </button>

@@ -1,6 +1,5 @@
-import {useState, useEffect, DragEvent, MouseEvent} from 'react';
+import {useState, useEffect} from 'react';
 import { useNavigate } from 'react-router-dom';
-import { IoIosArrowDown } from "react-icons/io";
 import { FaListUl } from "react-icons/fa";
 import CardsIco from '../../../assets/cards.svg';
 import { FadeLoader } from 'react-spinners';
@@ -13,8 +12,12 @@ import {
   handleGetEntertainment
 } from '../api';
 
+import CardsComponent from '../components/CardsComponent';
+
 import Seperator from '../components/Seperator';
 import ListMission from '../components/Mission';
+
+import 'drag-drop-touch';
 
 const api = createApi(import.meta.env.VITE_API_BASE_URL+'missions/apis/');
 
@@ -35,34 +38,79 @@ function Home({title}: {title: string}) {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+
+  const handleSwapCards = (xStart: number, xEnd: number) => {
+
+    const workingContainer: HTMLSpanElement = document.querySelector('span.working') as HTMLSpanElement;
+    const pendingContainer: HTMLSpanElement = document.querySelector('span.pending') as HTMLSpanElement;
+    const doneContainer: HTMLSpanElement = document.querySelector('span.done') as HTMLSpanElement;
+
+    const left = (xEnd - xStart) < -30;
+    const right = (xEnd - xStart) > 30;
+    
+    if (left) {
+      if (workingContainer.classList.contains('active')) {
+        workingContainer.classList.remove('active');
+        workingContainer.parentElement?.classList.remove('working')
+        doneContainer.classList.add('active');
+        workingContainer.parentElement?.classList.add('done');
+
+      } else if (doneContainer.classList.contains('active')) {
+        doneContainer.classList.remove('active');
+        doneContainer.parentElement?.classList.remove('done')
+        pendingContainer.classList.add('active');
+        doneContainer.parentElement?.classList.add('pending')
+      
+      } else if (pendingContainer.classList.contains('active')) {
+        pendingContainer.classList.remove('active');
+        pendingContainer.parentElement?.classList.remove('pending')
+        workingContainer.classList.add('active');
+        pendingContainer.parentElement?.classList.add('working')
+      }
+    
+    } else if (right) {
+      if (workingContainer.classList.contains('active')) {
+        workingContainer.classList.remove('active');
+        workingContainer.parentElement?.classList.remove('working')
+        pendingContainer.classList.add('active');
+        workingContainer.parentElement?.classList.add('pending');
+        
+      } else if (pendingContainer.classList.contains('active')) {
+        pendingContainer.classList.remove('active');
+        pendingContainer.parentElement?.classList.remove('pending')
+        doneContainer.classList.add('active');
+        pendingContainer.parentElement?.classList.add('done')
+      
+      } else if (doneContainer.classList.contains('active')) {
+        doneContainer.classList.remove('active');
+        doneContainer.parentElement?.classList.remove('done')
+        workingContainer.classList.add('active');
+        doneContainer.parentElement?.classList.add('working')
+      
+      }
+    }
+  }
+
   useEffect(() => {
     if (listStyle === 'cards') {
 
       if (window.matchMedia('(max-width: 545px)').matches) {
-        console.log('works')
-        const allCards: NodeListOf<HTMLDivElement> = document.querySelectorAll('.missions-container.cards .missions-card');
-        console.log(allCards)
-        const handleDivCards = (card: HTMLDivElement) => {
-          // (card.parentElement as HTMLElement).ontouchstart = (e) => {
-          //   e.stopPropagation();
-          // }
-          card.onclick = () => {
-            console.log('something');
-            allCards.forEach(card => {card.parentElement?.classList.remove('active')});
-            card.parentElement?.classList.add('active');
-            card.parentElement?.parentElement?.classList.add(card.classList[0])
-          };
 
-          // card.onmouseleave = () => {
-          //   card.parentElement?.classList.remove('active');
-          //   card.parentElement?.classList.remove(card.parentElement?.classList[0])
-          //   allCards.forEach(card => {card.classList.contains('working-card') ? card.parentElement?.classList.add('active'): null});
-          // }
+
+        let xStart: number;
+        (document.querySelector('.missions-container.cards') as HTMLElement).ontouchstart = (e: TouchEvent) => {
+
+          xStart = e.touches[0].clientX;
+        };
+
+        (document.querySelector('.missions-container.cards') as HTMLElement).ontouchend = async (e:TouchEvent) => {
+
+          const xEnd = e.changedTouches[0].clientX;
+          handleSwapCards(xStart, xEnd)
         }
-        
-        allCards.forEach(handleDivCards);
+
+
       } else {
-        console.log('no works')
         const allCards: NodeListOf<HTMLSpanElement> = document.querySelectorAll('.missions-container.cards > span');
 
         const handleSpanCard = (card: HTMLSpanElement) => {
@@ -140,25 +188,7 @@ function Home({title}: {title: string}) {
   }
 
 
-  async function handleUpdateMissionOfCards(missionID: number, data: {status: string}) {
-    try {
-      const response = await api.patch(`missions/${missionID}/`, data);
-
-      if (response.status === 202) {
-        return true;
-      } else if (response.status === 200) {
-        window.location.reload();
-      }
-
-    } catch (error) {
-      if (error instanceof AxiosError) {
-        if (error.status === 500 || error.status === 400) {
-          alert('Something wen wrong, please try again.');
-        }
-      }
-      console.log('Error :\n',error);
-    }
-  }
+  
  
 
   async function handleSetListStyle(style: string) {
@@ -173,28 +203,7 @@ function Home({title}: {title: string}) {
     }
   }
 
-  function handleExtendMissionOfCard(e: MouseEvent<HTMLButtonElement>) {
-    (e.target as HTMLButtonElement)?.parentElement?.querySelector('.related-object')?.classList.toggle('show');
-    (e.target as HTMLButtonElement).classList.toggle('extend');
-  }
-
-  // Handling Drag-drop functionality
-  function handleDragStart(e: DragEvent<HTMLElement>) {
-    e.dataTransfer.setData("text", (e.target as HTMLElement).id);
-  }
-
-  function handleDragOver(e: DragEvent<HTMLElement>) {
-    e.preventDefault();
-  }
-
-  async function handleDrop(e: DragEvent<HTMLElement>, status: string) {
-    e.preventDefault();
-    const data = e.dataTransfer.getData("text");
-
-    if (await handleUpdateMissionOfCards(parseInt(data.split('-')[1]),{status})){
-      (e.target as HTMLElement).appendChild(document.getElementById(data as string) as HTMLElement);
-    }
-  }
+  
 
 
   return (
@@ -217,110 +226,7 @@ function Home({title}: {title: string}) {
           <br />
           <div className={`missions-container ${listStyle === 'cards' ? 'cards' : 'list'}`}>
             {listStyle === 'cards' ? (
-              <>
-                <span className='pending'>
-                  <div className="missions-card pending-card">
-                    <h3>Pending</h3>
-                    <div className="missions"
-                        onDrop={(e) => {handleDrop(e, 'pending')}}
-                        onDragOver={handleDragOver}
-                    >
-                      {data['missions']?.filter((mission) => {
-                          return mission.status === 'pending';
-                      }).map(mission => {
-                        return (
-                          <div id={`mission-${mission.id}`} 
-                              draggable="true" 
-                              onDragStart={handleDragStart}
-                              onDrop={(e) => {e.preventDefault()}}
-                          >
-                            <p>
-                              {mission.content}
-                            </p>
-                            {mission.related && (
-                              <>
-                                <a href={`${mission.related.route}${mission.related.id}`} target='_blank' className="related-object">
-                                  <span>{mission.related.title}</span>
-                                </a>
-                                <button onClick={handleExtendMissionOfCard} className='extend-mission-btn'>
-                                  <IoIosArrowDown />
-                                </button>
-                              </>
-                            )}
-                          </div>
-                        )
-                      })}
-                    </div>
-                  </div>
-                </span>
-                <span className='working active'>
-                  <div className="missions-card working-card">
-                    <h3>Being Done</h3>
-                    <div className="missions"
-                        onDrop={(e) => { handleDrop(e, 'working')}}
-                        onDragOver={handleDragOver}>
-                    {data['missions']?.filter((mission) => {
-                          return mission.status === 'working';
-                      }).map(mission => {
-                        return (
-                          <div id={`mission-${mission.id}`} 
-                              draggable="true"
-                              onDragStart={handleDragStart} 
-                              onDrop={(e) => {e.preventDefault()}}>
-                            <p>
-                              {mission.content}
-                            </p>
-                            {mission.related && (
-                              <>
-                                <a href={`${mission.related.route}${mission.related.id}`} target='_blank' className="related-object">
-                                  <span>{mission.related.title}</span>
-                                </a>
-                                <button onClick={handleExtendMissionOfCard} className='extend-mission-btn'>
-                                  <IoIosArrowDown />
-                                </button>
-                              </>
-                            )}
-                          </div>
-                        )
-                      })}
-                    </div>
-                  </div>
-                </span>
-                <span className='done'>
-                  <div className="missions-card done-card">
-                    <h3>Done</h3>
-                    <div className="missions" 
-                        onDrop={(e) => {handleDrop(e, 'done')}}
-                        onDragOver={handleDragOver}>
-                    {data['missions']?.filter((mission) => {
-                          return mission.status === 'done';
-                      }).map(mission => {
-                        return (
-                          <div id={`mission-${mission.id}`} 
-                              draggable="true"
-                              onDragStart={handleDragStart}
-                              onDrop={(e) => {e.preventDefault()}}
-                          >
-                            <p>
-                              {mission.content}
-                            </p>
-                            {mission.related && (
-                              <>
-                                <a href={`${mission.related.route}${mission.related.id}`} target='_blank' className="related-object">
-                                  <span>{mission.related.title}</span>
-                                </a>
-                                <button onClick={handleExtendMissionOfCard} className='extend-mission-btn'>
-                                  <IoIosArrowDown />
-                                </button>
-                              </>
-                            )}
-                          </div>
-                        )
-                      })}
-                    </div>
-                  </div>
-                </span>
-              </>
+              <CardsComponent data={data} api={api} />
             ): data['missions']?.map(mission => {
               return (
                 <ListMission mission={mission} readonly={false} />

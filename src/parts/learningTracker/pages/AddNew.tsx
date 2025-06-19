@@ -71,7 +71,7 @@ function AddNew() {
             <option value="">Status</option>
             <option value="current">current</option>
             <option value="done">done</option>
-            <option value="later">lateer</option>
+            <option value="later">later</option>
           </select>
         </div>
         {course && (

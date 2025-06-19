@@ -89,7 +89,7 @@ a {
 }
 
 .nav-item span {
-  font-size: 1em;
+  
   font-weight: 500;
 }
 
@@ -260,6 +260,10 @@ button.logout {
 @media screen and (max-width: 545px) {
   .side-nav{
     width: 100vw;
+  }
+
+  .nav-item span {
+    font-size: 1.1em;
   }
 
   .toggle-container.open {

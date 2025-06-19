@@ -130,7 +130,7 @@ function CreateNewList({title}: {title: string}) {
       related: relatedObj as RelatedObj
     };
 
-    setMissions([...missions, missionData]);
+    setMissions([...missions, missionData as Mission]);
     setRelatedObj(null);
     setObjSearchResults([]);
     setAddMission(false);
