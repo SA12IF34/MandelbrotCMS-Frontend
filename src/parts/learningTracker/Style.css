@@ -372,6 +372,19 @@ Media Queries
 
 
 @media screen and (max-width: 545px) {
+    nav {
+        font-size: .92em;
+    }
+
+    .page {
+        padding: 20px;
+    }
+
+    .field-container > input,
+    .field-container > select {
+        padding: 7px;
+    }
+
     .courses-container a {
         min-width: calc(100vw - 60px);
         max-width: calc(100vw - 60px);

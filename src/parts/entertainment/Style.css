@@ -44,11 +44,7 @@ header {
     position: relative;
 }
 
-header > button {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    right: 40px;
+header > nav > button {
     background-color: transparent;
     border: none;
     outline: none;
@@ -180,8 +176,8 @@ h1, h2, h3, h4 {
 
 
     .materials-container > .materials > a {
-        min-width: calc((100% - 30px) / 2);
-        max-width: calc((100% - 30px) / 2);
+        min-width: calc((100% - 40px) / 2);
+        max-width: calc((100% - 40px) / 2);
     }
 }
 
@@ -498,6 +494,24 @@ Material Page
 .material-container .link {
     text-decoration-line: underline !important;
     color: var(--c3);
+}
+
+.material-container button.update-btn {
+    margin: 10px 0;
+    background-color: var(--c1);
+    border: 2px solid var(--c3);
+    border-radius: 7px;
+    padding: 5px 7px;
+    color: var(--c3);
+    font-size: 1em;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.material-container button.update-btn:hover {
+    background-color: var(--c3);
+    color: var(--c1);
+    font-weight: 500;
 }
 
 .material-container > div:nth-child(3) {
@@ -875,13 +889,32 @@ Search Page
         right: 20px;
     }
 
+    nav {
+        font-size: 0.9em;
+        justify-content: space-between;
+        column-gap: 0;
+    }
+
+    .add-material-page,
+    .search-page {
+        padding: 20px;
+    }
+
+    .materials-container > .types {
+        column-gap: 0;
+        justify-content: space-between;
+    }
     .materials-container > .types > button {
-        font-size: 0.8em;
+        font-size: 0.85em;
     }
 
     .materials-container > .view-all {
         top: auto;
         bottom: 5px;
+    }
+
+    .materials-container > .materials {
+        margin-bottom: 0px;
     }
 
     .img-container {
@@ -900,13 +933,15 @@ Search Page
 
     .by-link .field-container > input,
     .by-link .field-container > select,
+    .by-link > button,
     .fields-container > input[type='text'] {
         height: max-content;
-        font-size: 0.8em;
+        font-size: 0.9em;
+        font-weight: 500;
     }
 
-    .by-link > button {
-        font-size: 0.8em;
+    .manual > form > input, .manual > form > textarea, .manual > form > select, .manual > form > button[type='submit'], .manual > form .image-upload-label {
+        font-size: 0.9em;
     }
 
 
@@ -922,6 +957,19 @@ Search Page
     /* 
     Material Page
     */
+
+    .material-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .material-container > div {
+        width: 100%;
+    }
+
+    .material-container button.delete {
+        align-self: start;
+    }
 
     .entries-container {
         justify-content: center;

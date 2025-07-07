@@ -1,0 +1,433 @@
+:root {
+    --c1: #f5f5f5;
+    --c2: #dcbfa8;
+    --c3: #98816c;
+    --header-column-gap: 10%;
+}
+
+h1,
+h2,
+h3,
+h4 {
+    font-weight: 500;
+}
+
+.n-layout {
+    background-color: var(--c1);
+    color: var(--c3);
+}
+
+.n-nav {
+    box-shadow: 2px 2px 5px 0px var(--c3);
+    background-color: var(--c1);
+}
+
+.n-nav span {
+    color: var(--c3) !important; 
+    font-weight: bold;
+}
+
+.n-nav .sep {
+    background-color: var(--c3) !important;
+}
+
+.n-nav .toggle-arrow {
+    color: var(--c3) !important;
+}
+
+header {
+    height: 6vh;
+    border-bottom: 1px solid var(--c3);
+}
+
+nav {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    column-gap: var(--header-column-gap);
+    padding: 20px;
+}
+
+nav a {
+    color: var(--c3);
+    font-weight: 500;
+}
+
+.current-page {
+    text-shadow: 1px 1px 10px  var(--c3);
+}
+
+.page {
+    width: 100%;
+    height: max-content;
+    color: var(--c3);
+    padding: 30px;
+    container: notes / inline-size;
+}
+
+.note-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    width: 95%;
+    border-bottom: 1px solid var(--c3);
+    padding: 10px;
+}
+
+.note-header .tools > button,
+.note-header .tools > label {
+    background-color: transparent;
+    border: none;
+    outline: none;
+    display: inline-flex;
+    font-size: 24px;
+    color: var(--c3);
+    cursor: pointer;
+    margin: 0 10px;
+    padding: 5px;
+}
+
+.note-header .tools label > input {
+    display: none;
+}
+
+.note-header .tools > button:hover,
+.note-header .tools > button.selected {
+    background-color: var(--c3);
+    color: var(--c1);
+    border-radius: 5px;
+    
+}
+
+.download-btn {
+    position: relative;
+}
+
+.download-list {
+    width: max-content;
+    height: max-content;
+    border-radius: 15px;
+    border: 2px solid var(--c3);
+    overflow: hidden;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.download-list > button,
+.download-list > a {
+    background-color: var(--c1);
+    color: var(--c3);
+    border-bottom: 1px solid var(--c3) !important;
+    padding: 5px 7px;
+    border: none;
+    outline: none;
+    text-decoration: none;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.download-list > button:nth-child(3) {
+    border-bottom: none !important;
+}
+
+.download-list > button:hover,
+.download-list > a:hover {
+    background-color: #eee !important;
+}
+
+.note-header .actions button {
+    background-color: var(--c1);
+    color: var(--c3);
+    border: none;
+    border-radius: 10px;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: bold;
+    border: 3px solid var(--c3);
+    margin: 0 5px;
+}
+
+/* Home Page */
+
+.notes-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    
+}
+
+.note-element {
+    width: 100%;
+    aspect-ratio: 1/0.4;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: var(--c1);
+    border-radius: 25px;
+    border: 6px solid var(--c2);
+    color: var(--c3);
+    box-shadow: 2px 2px 15px -5px var(--c3);
+}
+
+.note-element > span {
+    align-self: flex-end;
+}
+
+.note-element > h2 {
+    align-self: flex-start;
+}
+
+@container notes (width <= 1024px) {
+    .notes-container {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+
+    .note-element {
+        aspect-ratio: 1/0.3;
+        border-width: 5px;
+    }
+
+    .note-element > h2 {
+        font-size: 1.3em;
+    }
+}
+
+
+/* New Note Page | Note Page */
+
+.new-note-page,
+.note-page {
+    padding-top: 0;
+    min-height: 100vh;
+}
+
+.main-container:has(.new-note-page),
+.main-container:has(.note-page) {
+    background: linear-gradient(to top, var(--c2) 40%, transparent );
+}
+
+.new-note-page > div:nth-child(2) {
+    width: 100%;
+
+    height: max-content;
+}
+
+.note-container {
+    background-color: var(--c1);
+    margin: auto;
+    aspect-ratio: 1/1.2;
+    padding: 20px;
+    border-radius: 15px;
+    border: 3px solid silver;
+    width: 60%;
+    height: max-content;
+    display: flex;
+    flex-direction: column;
+    row-gap: 20px;
+}
+
+#note-title,
+#note-content {
+    width: 100%;
+    border: none;
+    outline: none;
+    background-color: transparent;
+    padding: 5px;
+    border-left: 2px solid rgb(207, 207, 207);
+    color: rgb(22, 22, 22);
+}
+
+#note-title {
+    font-size: 2em;
+}
+
+#note-content {
+    height: max-content;
+    font-size: 1.2em;
+    line-height: 1.5em;
+}
+
+.note-page #note-title,
+.note-page #note-content {
+    border: none;
+}
+
+.draw-canvas,
+.note-img-container {
+    width: 80%;
+    margin: auto;
+    border: 1px solid silver;
+    border-radius: 7px;
+    overflow: hidden;
+    position: relative;
+}
+
+.draw-canvas {
+    aspect-ratio: 16/9;
+}
+.note-img-container {
+    height: max-content;
+    display: flex;
+}
+
+.note-img-container > button {
+    top: 10px;
+    right: 10px;
+}
+
+.note-img-container > img {
+    width: 100%;
+    height: auto;
+}
+
+.draw-canvas > button,
+.note-img-container > button {
+    background-color: transparent;
+    border: none;
+    outline: none;
+    color: silver;
+    font-size: 24px;
+    cursor: pointer;
+    position: absolute;
+}
+
+.draw-canvas > button > * {
+    pointer-events: none;
+}
+
+.draw-canvas > button:nth-child(1) {
+    top: 10px;
+    left: 10px;
+}
+
+.draw-canvas > button:nth-child(2) {
+    top: 10px;
+    right: 10px;
+}
+
+.draw-canvas > button:nth-child(3) {
+    bottom: 10px;
+    left: 10px;
+}
+
+
+@media screen and (max-width: 912px) {
+    .note-container {
+        width: 80%;
+        aspect-ratio: 1/1.3;
+    }
+
+    .note-header .tools button:hover {
+        background-color: transparent;
+        color: var(--c3);
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .notes-container {
+        grid-template-columns: 1fr !important;
+    }
+
+    .note-element {
+        aspect-ratio: 1/0.12;
+        border: none;
+        position: relative;
+        box-shadow: none;
+    }
+
+    .note-element::after {
+        content: "";
+        position: absolute;
+        width: 100%;
+        height: 4px;
+        top: 100%;
+        left: 0;
+        background-color: var(--c2);
+        border-radius: 99px;
+
+    }
+
+    .note-element > h2 {
+        font-size: 1.2em;
+    }
+
+    .note-container {
+        width: 100%;
+        aspect-ratio: auto;
+        min-height: 85vh;
+    }
+}
+
+@media screen and (max-width: 550px) {
+
+    nav {
+        font-size: 0.9em;
+    }
+
+    #note-title {
+        font-size: 1.6em;
+    }
+
+    h2 {
+        font-size: 1.3em
+    }
+
+    h3, #note-content {
+        font-size: 1.1em;
+    }
+
+    
+
+    .note-page, .new-note-page {
+        padding: 0 20px;
+    }
+
+    .page:not(.note-page, .new-note-page) {
+        padding: 20px;
+    }
+
+    .note-element {
+        aspect-ratio: 1/0.25;
+    }
+
+    .note-element > span {
+        font-size: 0.9em;
+    }
+
+
+    .note-header {
+        width: 100%;
+        padding: 10px 0;
+    }
+
+    .draw-canvas {
+        aspect-ratio: 16/12;
+    }
+
+    .draw-canvas, .note-img-container {
+        width: 100%;
+    }
+
+}
+
+@media screen and (max-width: 360px) {
+
+    .note-container {
+        min-height: 83vh;
+    }
+
+    .note-header .tools button, .note-header .tools label {
+        font-size: 20px
+    }
+
+    .note-header .actions button {
+        font-size: 0.9em;
+    }
+}

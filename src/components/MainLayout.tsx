@@ -39,6 +39,9 @@ function MainLayout({children, style}: {children: React.ReactNode, style: styleP
     },{
         href: '/goals',
         name: 'Goals'
+    },{
+        href: '/notes',
+        name: 'Notes'  
     }
   ]
 

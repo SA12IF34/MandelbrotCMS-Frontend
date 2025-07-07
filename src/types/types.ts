@@ -41,7 +41,7 @@ export interface Mission {
   content: string,
   project?: number | Project | null ,
   course?: number | Course | null,
-  status?: string,
+  status: 'pending' | 'working' | 'done',
   list?: number,
   related?: Project | Course | RelatedObj
 }
@@ -130,4 +130,19 @@ export interface Goal extends BaseObj {
   goals?: Array<number> | null,
   done: boolean ,
   progress?: number
+}
+
+// Notes
+
+type BaseObjWithoutDescription = Omit<BaseObj, 'description' | 'title'>;
+export interface Note extends BaseObjWithoutDescription {
+  title: string | null | undefined,
+  content: string,
+  drawn_content?: string | null,
+  uploaded_file?: string | null,
+  project?: number | null,
+  learning_material?: number | null,
+  entertainment_material?: number | null,
+  goal?: number | null,
+  missions_list?: number | null
 }

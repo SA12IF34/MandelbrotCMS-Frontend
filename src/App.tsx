@@ -9,6 +9,7 @@ const SessionsManager = React.lazy(() => import('./parts/sessionsManager/Main'))
 const LearningTracker = React.lazy(() => import('./parts/learningTracker/Main'));
 const Entertainment = React.lazy(() => import('./parts/entertainment/Main'));
 const Goals = React.lazy(() => import('./parts/goals/Main'));
+const Notes = React.lazy(() => import('./parts/notes/Main'));
 
 const Login = React.lazy(() => import('./pages/Login'));
 const Register = React.lazy(() => import('./pages/Register'));
@@ -24,6 +25,7 @@ function App() {
           <Route path="/learning-tracker/*" element={<LearningTracker />} />
           <Route path="/entertainment/*" element={<Entertainment />} />
           <Route path="/goals/*" element={<Goals />} />
+          <Route path="/notes/*" element={<Notes />} />
 
           <Route path='/login/' element={<Login />} />
           <Route path='/register/' element={<Register />} />

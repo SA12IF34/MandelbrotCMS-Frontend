@@ -89,13 +89,14 @@ a {
 }
 
 .nav-item span {
-  font-size: 1em;
+  
   font-weight: 500;
 }
 
 .sep {
-  width: 80%;
+  width: 10%;
   height: 1px;
+  border-radius: 99px;
 }
 
 .side-nav-list > li > a {
@@ -235,6 +236,12 @@ button.logout {
   color: black;
 }
 
+@media screen and (max-width: 1024px) and (min-width: 769px) {
+  .nav-item span {
+    font-size: 0.85em;
+  }
+}
+
 @media screen and (max-width: 768px) {
   :root {
     --f-nav: 1em;
@@ -253,6 +260,10 @@ button.logout {
 @media screen and (max-width: 545px) {
   .side-nav{
     width: 100vw;
+  }
+
+  .nav-item span {
+    font-size: 1.1em;
   }
 
   .toggle-container.open {
