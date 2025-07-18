@@ -408,7 +408,7 @@ const MissionsPopup = ({missions, setMissions}: {
             <textarea ref={contentRef} placeholder='Mission content' />
             <button onClick={() => {
                 if (contentRef.current?.value && contentRef.current?.value.length > 0) {
-                    setMissions([...missions, {content: contentRef.current?.value as string}]);
+                    setMissions([...missions, {content: contentRef.current?.value as string} as Mission]);
                 }
                 document.querySelector('.missions-popup')?.parentElement?.remove();
             }}>Done</button>
