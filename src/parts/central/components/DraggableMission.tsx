@@ -1,4 +1,4 @@
-import {MouseEvent, DragEvent, useState, useEffect} from 'react';
+import {MouseEvent, DragEvent, useEffect} from 'react';
 import { IoIosArrowDown } from 'react-icons/io';
 import {RelatedObj, Mission} from '../../../types/types';
 
@@ -11,7 +11,6 @@ type props = {
 
 function DraggableMission({mission, related, handleDragStart}: props) {
 
-  const [status, setStatus] = useState<'pending' | 'working' | 'done'>(mission.status);
 
   function handleExtendMissionOfCard(e: MouseEvent<HTMLButtonElement>) {
     (e.target as HTMLButtonElement)?.parentElement?.querySelector('.related-object')?.classList.toggle('show');
