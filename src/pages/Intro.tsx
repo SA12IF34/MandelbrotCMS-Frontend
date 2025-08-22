@@ -171,21 +171,18 @@ function Intro() {
   }
 
 
-  const startSecondStage = () => {
+  const handleStart = () => {
     const page = document.querySelector('.intro-page') as HTMLDivElement;
-    // (page.querySelector('audio.two') as HTMLAudioElement).play();
-    (page.querySelector('.container') as HTMLElement).remove();
-    (page.querySelector('button.start') as HTMLElement).remove();
-    
-    const newContainer = document.createElement('div');
-    newContainer.classList.add('new-container');
+
+    const titleContainer = document.createElement('div');
+    titleContainer.classList.add('title-container');
 
     const title = document.createElement('h1');
     title.textContent = 'MandelbrotCMS';
 
-    newContainer.append(title);
+    titleContainer.append(title);
 
-    (page.querySelector('.domain-container') as HTMLElement).before(newContainer);
+    (page.querySelector('.parts-container') as HTMLElement).before(titleContainer);
     
     const lastTime = setTimeout(() => {
         (page.querySelector('.action-btns') as HTMLElement).classList.remove('hide');
@@ -193,7 +190,6 @@ function Intro() {
     }, 3800)
   
   }
-
 
 
   const handleShowTip = () => {
@@ -208,10 +204,6 @@ function Intro() {
   useEffect(() => {
     handleCheckAuth();
     const page = document.querySelector('.intro-page') as HTMLDivElement;
-    const container = page.querySelector('.container') as HTMLDivElement;
-    const pepe = page.querySelectorAll('.container p') as NodeListOf<HTMLParagraphElement>;
-    const btn = page.querySelector('button.start') as HTMLButtonElement;
-    const domain = page.querySelector('.domain-container') as HTMLDivElement;
     const partsContainer = page.querySelector('.parts-container') as HTMLDivElement;
     const parts = page.querySelectorAll('.part') as NodeListOf<HTMLDivElement>;
 
@@ -240,42 +232,10 @@ function Intro() {
         }
     })
 
-    pepe.forEach((p) => {
-        p.childNodes.forEach((span, idx) => {
-            if (span instanceof HTMLElement && span.nodeType === 1) {
-                let delay = Math.ceil(p.childNodes.length / 2) - idx;
-                delay = 2.2 + delay/15;
-                span.style.animationDelay = `${delay}s`;
-            }
-        })
-    })
+    partsContainer.classList.remove('none');
+    partsContainer.classList.add('show');
 
-    const handleStartAction = () => {
-        container.classList.add('start');
-        const time = setTimeout(() => {
-            (page.querySelector('audio.one') as HTMLAudioElement).play();
-            clearTimeout(time);
-        }, 1000)
-
-        btn.style.display = 'none';
-
-        const time2 = setTimeout(() => {
-            domain.classList.add('expand');
-            clearTimeout(time2);
-        }, 3500);
-
-        const time3 = setTimeout(() => {
-            partsContainer.classList.remove('none');
-            partsContainer.classList.add('show');
-
-            startSecondStage();
-            clearTimeout(time3);
-        }, 13000)
-
-        btn.removeEventListener('click', handleStartAction);
-    };
-
-    btn.addEventListener('click', handleStartAction);
+    handleStart();
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
@@ -283,55 +243,6 @@ function Intro() {
 
   return (
       <div className='intro-page'>
-          <div className="container">
-              <div>
-                  <div className="blur">
-                      <p>
-                          <span>D</span>
-                          <span>o</span>
-                          <span>m</span>
-                          <span>a</span>
-                          <span>i</span>
-                          <span>n</span>
-                          <span>&nbsp;</span>
-                          <span>E</span>
-                          <span>x</span>
-                          <span>p</span>
-                          <span>a</span>
-                          <span>n</span>
-                          <span>s</span>
-                          <span>i</span>
-                          <span>o</span>
-                          <span>n</span>
-                      </p>
-                  </div>
-                  <div className="clear">
-                      <p>
-                          <span>D</span>
-                          <span>o</span>
-                          <span>m</span>
-                          <span>a</span>
-                          <span>i</span>
-                          <span>n</span>
-                          <span>&nbsp;</span>
-                          <span>E</span>
-                          <span>x</span>
-                          <span>p</span>
-                          <span>a</span>
-                          <span>n</span>
-                          <span>s</span>
-                          <span>i</span>
-                          <span>o</span>
-                          <span>n</span>
-                      </p>
-                  </div>
-              </div>
-          </div>
-
-          <div className="domain-container">
-              <img src={mandelbrotSet} alt="" />
-          </div>
-
           <div className="parts-container none">
             <span className='show-tip' onClick={handleShowTip}>
                 <FaExclamation />
@@ -406,7 +317,7 @@ function Intro() {
               )}
           </div>
 
-          <button className="start">Start</button>
+          {/* <button className="start">Start</button> */}
 
           <audio className="one"src={domainExpansion}></audio>
           <audio className="two" src={audio}></audio>
