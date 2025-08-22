@@ -12,11 +12,19 @@ function GithubLogin() {
     window.location.assign(authorizeURL)
   }
 
+  interface GithubUserInfo {
+    access_token: string;
+    email: string;
+    username: string;
+    name: string;
+}
 
-  async function handleLogin(accessToken: string) {
+  async function handleLogin(accessToken: string, email: string, username: string) {
     try {
         const response = await api.post('authentication/apis/rest-auth/github/', {
-            access_token: accessToken
+            access_token: accessToken,
+            email: email,
+            username: username
         });
 
         if (response.status === 200) {
@@ -27,23 +35,19 @@ function GithubLogin() {
     }
   }
 
-  const handleGetAccessToken = async (code:string) => {
-
+  const handleGetAccessToken = async (code: string) => {
     try {
         const response = await api.post('authentication/apis/rest-auth/access_token/github/', {
             code
         });
 
         if (response.status === 200) {
-            const data = await response.data;
-            console.log(data);
-            handleLogin(data['access_token' as keyof typeof data])
+            const data = response.data as GithubUserInfo;
+            handleLogin(data.access_token, data.email, data.username);
         }
-
     } catch (error) {
         console.log(error)
     }
-
   }
 
   let num = 0;
